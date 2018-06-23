@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "StdlibShims",
+        "repositoryURL": "git@github.com:milseman/StdlibShims.git",
+        "state": {
+          "branch": "master",
+          "revision": "4d7dd2115050d39ce2088758952b878fb46fb2b5",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
