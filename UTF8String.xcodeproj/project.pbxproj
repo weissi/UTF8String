@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		186B4F2A20F4027800E9E9B1 /* StdlibUnittestShims.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186B4F2920F4027800E9E9B1 /* StdlibUnittestShims.swift */; };
+		186B4F2C20F4045500E9E9B1 /* ThreadLocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186B4F2B20F4045500E9E9B1 /* ThreadLocalStorage.swift */; };
 		18A8967E20EC45CD0097A770 /* OutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8967920EC45CC0097A770 /* OutputStream.swift */; };
 		18A8967F20EC45CD0097A770 /* SmallString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8967A20EC45CC0097A770 /* SmallString.swift */; };
 		18A8968020EC45CD0097A770 /* CompilerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8967B20EC45CC0097A770 /* CompilerProtocols.swift */; };
@@ -49,41 +51,22 @@
 		18A896B020EC45EC0097A770 /* StringGraphemeBreaking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8969820EC45EB0097A770 /* StringGraphemeBreaking.swift */; };
 		18A896B120EC45EC0097A770 /* StringComparison.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8969920EC45EC0097A770 /* StringComparison.swift */; };
 		18A896B220EC45EC0097A770 /* StringGutsVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8969A20EC45EC0097A770 /* StringGutsVisitor.swift */; };
-		OBJ_32 /* StdlibShims.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* StdlibShims.swift */; };
-		OBJ_33 /* StdlibUnittestShims.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* StdlibUnittestShims.swift */; };
-		OBJ_40 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Package.swift */; };
 		OBJ_46 /* Scratch.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Scratch.swift */; };
 		OBJ_47 /* StdlibMockUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* StdlibMockUp.swift */; };
 		OBJ_48 /* UTF8String.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* UTF8String.swift */; };
-		OBJ_50 /* StdlibShims.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "StdlibShims::StdlibShims::Product" /* StdlibShims.framework */; };
 		OBJ_57 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_69 /* UTF8StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* UTF8StringTests.swift */; };
 		OBJ_70 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* XCTestManifests.swift */; };
 		OBJ_72 /* UTF8String.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "UTF8String::UTF8String::Product" /* UTF8String.framework */; };
-		OBJ_73 /* StdlibShims.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "StdlibShims::StdlibShims::Product" /* StdlibShims.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		18A8967520EC45580097A770 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = OBJ_1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = "StdlibShims::StdlibShims";
-			remoteInfo = StdlibShims;
-		};
 		18A8967620EC45580097A770 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "UTF8String::UTF8String";
 			remoteInfo = UTF8String;
-		};
-		18A8967720EC45580097A770 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = OBJ_1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = "StdlibShims::StdlibShims";
-			remoteInfo = StdlibShims;
 		};
 		18A8967820EC45590097A770 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -95,6 +78,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		186B4F2920F4027800E9E9B1 /* StdlibUnittestShims.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StdlibUnittestShims.swift; sourceTree = "<group>"; };
+		186B4F2B20F4045500E9E9B1 /* ThreadLocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThreadLocalStorage.swift; path = "../../../utf8-swift/swift/stdlib/public/core/ThreadLocalStorage.swift"; sourceTree = "<group>"; };
 		18A8967920EC45CC0097A770 /* OutputStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OutputStream.swift; path = "../../../utf8-swift/swift/stdlib/public/core/OutputStream.swift"; sourceTree = "<group>"; };
 		18A8967A20EC45CC0097A770 /* SmallString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SmallString.swift; path = "../../../utf8-swift/swift/stdlib/public/core/SmallString.swift"; sourceTree = "<group>"; };
 		18A8967B20EC45CC0097A770 /* CompilerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompilerProtocols.swift; path = "../../../utf8-swift/swift/stdlib/public/core/CompilerProtocols.swift"; sourceTree = "<group>"; };
@@ -132,24 +117,15 @@
 		OBJ_22 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Package.swift; path = "/Users/milseman/development/src/UTF8String/.build/checkouts/StdlibShims.git--3688164898073635632/Package.swift"; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		OBJ_9 /* Scratch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scratch.swift; sourceTree = "<group>"; };
-		"StdlibShims::StdlibShims::Product" /* StdlibShims.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StdlibShims.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		"UTF8String::UTF8String::Product" /* UTF8String.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTF8String.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"UTF8String::UTF8String::Product" /* UTF8String.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UTF8String.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"UTF8String::UTF8StringTests::Product" /* UTF8StringTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = UTF8StringTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		OBJ_34 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		OBJ_49 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_50 /* StdlibShims.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,7 +134,6 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_72 /* UTF8String.framework in Frameworks */,
-				OBJ_73 /* StdlibShims.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_15 /* UTF8StringTests.swift */,
+				186B4F2920F4027800E9E9B1 /* StdlibUnittestShims.swift */,
 				OBJ_16 /* XCTestManifests.swift */,
 			);
 			name = UTF8StringTests;
@@ -213,7 +189,6 @@
 		OBJ_23 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				"StdlibShims::StdlibShims::Product" /* StdlibShims.framework */,
 				"UTF8String::UTF8String::Product" /* UTF8String.framework */,
 				"UTF8String::UTF8StringTests::Product" /* UTF8StringTests.xctest */,
 			);
@@ -242,6 +217,7 @@
 		OBJ_8 /* UTF8String */ = {
 			isa = PBXGroup;
 			children = (
+				186B4F2B20F4045500E9E9B1 /* ThreadLocalStorage.swift */,
 				OBJ_9 /* Scratch.swift */,
 				18A8968D20EC45EA0097A770 /* String.swift */,
 				18A8968720EC45EA0097A770 /* StringBridge.swift */,
@@ -281,36 +257,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		"StdlibShims::StdlibShims" /* StdlibShims */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_28 /* Build configuration list for PBXNativeTarget "StdlibShims" */;
-			buildPhases = (
-				OBJ_31 /* Sources */,
-				OBJ_34 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = StdlibShims;
-			productName = StdlibShims;
-			productReference = "StdlibShims::StdlibShims::Product" /* StdlibShims.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		"StdlibShims::SwiftPMPackageDescription" /* StdlibShimsPackageDescription */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_36 /* Build configuration list for PBXNativeTarget "StdlibShimsPackageDescription" */;
-			buildPhases = (
-				OBJ_39 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = StdlibShimsPackageDescription;
-			productName = StdlibShimsPackageDescription;
-			productType = "com.apple.product-type.framework";
-		};
 		"UTF8String::SwiftPMPackageDescription" /* UTF8StringPackageDescription */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = OBJ_53 /* Build configuration list for PBXNativeTarget "UTF8StringPackageDescription" */;
@@ -335,7 +281,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_51 /* PBXTargetDependency */,
 			);
 			name = UTF8String;
 			productName = UTF8String;
@@ -353,7 +298,6 @@
 			);
 			dependencies = (
 				OBJ_74 /* PBXTargetDependency */,
-				OBJ_75 /* PBXTargetDependency */,
 			);
 			name = UTF8StringTests;
 			productName = UTF8StringTests;
@@ -380,8 +324,6 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				"StdlibShims::StdlibShims" /* StdlibShims */,
-				"StdlibShims::SwiftPMPackageDescription" /* StdlibShimsPackageDescription */,
 				"UTF8String::UTF8String" /* UTF8String */,
 				"UTF8String::SwiftPMPackageDescription" /* UTF8StringPackageDescription */,
 				"UTF8String::UTF8StringPackageTests::ProductTarget" /* UTF8StringPackageTests */,
@@ -391,23 +333,6 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		OBJ_31 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 0;
-			files = (
-				OBJ_32 /* StdlibShims.swift in Sources */,
-				OBJ_33 /* StdlibUnittestShims.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		OBJ_39 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 0;
-			files = (
-				OBJ_40 /* Package.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		OBJ_45 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
@@ -423,6 +348,7 @@
 				18A896AE20EC45EC0097A770 /* StringUTF16View.swift in Sources */,
 				18A896A320EC45EC0097A770 /* StringIndexConversions.swift in Sources */,
 				18A896AC20EC45EC0097A770 /* StringStorage.swift in Sources */,
+				186B4F2C20F4045500E9E9B1 /* ThreadLocalStorage.swift in Sources */,
 				18A896A620EC45EC0097A770 /* StringVariant.swift in Sources */,
 				18A896A820EC45EC0097A770 /* StringInterpolation.swift in Sources */,
 				18A8968220EC45CD0097A770 /* CString.swift in Sources */,
@@ -460,17 +386,13 @@
 			files = (
 				OBJ_69 /* UTF8StringTests.swift in Sources */,
 				OBJ_70 /* XCTestManifests.swift in Sources */,
+				186B4F2A20F4027800E9E9B1 /* StdlibUnittestShims.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		OBJ_51 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = "StdlibShims::StdlibShims" /* StdlibShims */;
-			targetProxy = 18A8967520EC45580097A770 /* PBXContainerItemProxy */;
-		};
 		OBJ_62 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "UTF8String::UTF8StringTests" /* UTF8StringTests */;
@@ -481,38 +403,9 @@
 			target = "UTF8String::UTF8String" /* UTF8String */;
 			targetProxy = 18A8967620EC45580097A770 /* PBXContainerItemProxy */;
 		};
-		OBJ_75 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = "StdlibShims::StdlibShims" /* StdlibShims */;
-			targetProxy = 18A8967720EC45580097A770 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		OBJ_29 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = UTF8String.xcodeproj/StdlibShims_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited) -parse-stdlib";
-				PRODUCT_BUNDLE_IDENTIFIER = StdlibShims;
-				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = StdlibShims;
-			};
-			name = Debug;
-		};
 		OBJ_3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -538,48 +431,6 @@
 				USE_HEADERMAP = NO;
 			};
 			name = Debug;
-		};
-		OBJ_30 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = UTF8String.xcodeproj/StdlibShims_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited) -parse-stdlib";
-				PRODUCT_BUNDLE_IDENTIFIER = StdlibShims;
-				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = StdlibShims;
-			};
-			name = Release;
-		};
-		OBJ_37 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD = /usr/bin/true;
-				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Volumes/Xcode10A208_m18A328a_i16A319_t16J315_w16R315_b16P327_XcodeInternals_32bitSupport_FastSim_Boost_ASan_36GB/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
-				SWIFT_VERSION = 4.2;
-			};
-			name = Debug;
-		};
-		OBJ_38 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD = /usr/bin/true;
-				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Volumes/Xcode10A208_m18A328a_i16A319_t16J315_w16R315_b16P327_XcodeInternals_32bitSupport_FastSim_Boost_ASan_36GB/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
-				SWIFT_VERSION = 4.2;
-			};
-			name = Release;
 		};
 		OBJ_4 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -614,7 +465,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xfrontend -import-module -Xfrontend Swift -parse-stdlib";
 				PRODUCT_BUNDLE_IDENTIFIER = UTF8String;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -638,7 +489,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xfrontend -import-module -Xfrontend Swift -parse-stdlib";
 				PRODUCT_BUNDLE_IDENTIFIER = UTF8String;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -729,24 +580,6 @@
 			buildConfigurations = (
 				OBJ_3 /* Debug */,
 				OBJ_4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		OBJ_28 /* Build configuration list for PBXNativeTarget "StdlibShims" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				OBJ_29 /* Debug */,
-				OBJ_30 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		OBJ_36 /* Build configuration list for PBXNativeTarget "StdlibShimsPackageDescription" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				OBJ_37 /* Debug */,
-				OBJ_38 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

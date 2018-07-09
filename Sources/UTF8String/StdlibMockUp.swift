@@ -1,9 +1,7 @@
-import StdlibShims
-
 // Needed for bridging
 import Foundation
 
-public typealias Builtin = SwiftBuiltin
+//public typealias Builtin = SwiftBuiltin
 
 // TODO: Temporary, remove when StringIndex.swift migrates
 extension String {

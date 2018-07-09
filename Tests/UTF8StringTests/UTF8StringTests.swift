@@ -1,6 +1,5 @@
 import XCTest
 @testable import UTF8String
-import StdlibShims
 
 final class UTF8StringTests: XCTestCase {
   func testExample() {
@@ -41,6 +40,15 @@ final class UTF8StringTests: XCTestCase {
     expectEqualSequence(swiftStr.utf16, str.utf16)
   }
 
+  func testCharacterView() {
+    let swiftStr = "the quick 🦊 jumped over the lazy brown 🐶"
+    let str = UTF8String.String("the quick 🦊 jumped over the lazy brown 🐶")
+    expectEqual(swiftStr.count, str.count)
+
+    // TODO: Need to compare our Character with Swift Character somehow...
+//    expectEqual(Array(swiftStr), Array(str))
+//    expectEqualSequence(swiftStr, str)
+  }
 
   static var allTests = [
     ("testExample", testExample),
