@@ -11,11 +11,16 @@ extension String {
   }
 }
 
+@inlinable
+internal func _growArrayCapacity(_ capacity: Int) -> Int {
+  return capacity * 2
+}
+
 // Forward conformance to stdlib native ones
-extension String: Swift._ExpressibleByBuiltinUnicodeScalarLiteral {}
-extension String: Swift._ExpressibleByBuiltinExtendedGraphemeClusterLiteral {}
-extension String: Swift._ExpressibleByBuiltinUTF16StringLiteral {}
-extension String: Swift._ExpressibleByBuiltinStringLiteral {}
+//extension String: Swift._ExpressibleByBuiltinUnicodeScalarLiteral {}
+//extension String: Swift._ExpressibleByBuiltinExtendedGraphemeClusterLiteral {}
+//extension String: Swift._ExpressibleByBuiltinUTF16StringLiteral {}
+//extension String: Swift._ExpressibleByBuiltinStringLiteral {}
 //extension String: Swift.ExpressibleByUnicodeScalarLiteral {}
 //extension String: Swift.ExpressibleByExtendedGraphemeClusterLiteral {}
 //extension String: Swift.ExpressibleByStringLiteral {}
@@ -27,12 +32,6 @@ extension String: Swift._ExpressibleByBuiltinStringLiteral {}
 //}
 
 extension Unicode.Scalar {
-  @inlinable
-  @_transparent
-  public init(_builtinUnicodeScalarLiteral value: Builtin.Int32) {
-    self.init(UInt32(value))!
-  }
-
   public init(_unchecked v: UInt32) {
     self = Unicode.Scalar(v)._unsafelyUnwrappedUnchecked
   }
@@ -42,7 +41,7 @@ import SwiftShims
 
 extension String {
   // Hack to create our new String from toolchain's String
-  public init(_ s: Swift.StaticString) {
+  public init(fromSwiftString s: Swift.StaticString) {
     guard s.hasPointerRepresentation else { fatalError("this hack is for big literals") }
     let bufPtr = UnsafeBufferPointer(
       start: s.utf8Start, count: s.utf8CodeUnitCount)

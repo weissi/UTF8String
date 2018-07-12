@@ -33,6 +33,13 @@ public func expectTrue(
   XCTAssert(try expression1(), file: file, line: line)
 }
 
+public func expectFalse(
+  _ expression1: @autoclosure () throws -> Bool,
+  file: StaticString = #file, line: UInt = #line
+  ) {
+  XCTAssertFalse(try expression1(), file: file, line: line)
+}
+
 public func expectDoesNotThrow<T>(
   _ expression1: @autoclosure () throws -> T,
   file: StaticString = #file, line: UInt = #line

@@ -23,9 +23,9 @@
 /* Begin PBXBuildFile section */
 		186B4F2A20F4027800E9E9B1 /* StdlibUnittestShims.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186B4F2920F4027800E9E9B1 /* StdlibUnittestShims.swift */; };
 		186B4F2C20F4045500E9E9B1 /* ThreadLocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186B4F2B20F4045500E9E9B1 /* ThreadLocalStorage.swift */; };
+		188817C020F7F23C0023AA32 /* ICU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188817BF20F7F23C0023AA32 /* ICU.swift */; };
 		18A8967E20EC45CD0097A770 /* OutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8967920EC45CC0097A770 /* OutputStream.swift */; };
 		18A8967F20EC45CD0097A770 /* SmallString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8967A20EC45CC0097A770 /* SmallString.swift */; };
-		18A8968020EC45CD0097A770 /* CompilerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8967B20EC45CC0097A770 /* CompilerProtocols.swift */; };
 		18A8968120EC45CD0097A770 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8967C20EC45CD0097A770 /* Character.swift */; };
 		18A8968220EC45CD0097A770 /* CString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8967D20EC45CD0097A770 /* CString.swift */; };
 		18A8969B20EC45EC0097A770 /* StringComparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8968320EC45EA0097A770 /* StringComparable.swift */; };
@@ -80,9 +80,9 @@
 /* Begin PBXFileReference section */
 		186B4F2920F4027800E9E9B1 /* StdlibUnittestShims.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StdlibUnittestShims.swift; sourceTree = "<group>"; };
 		186B4F2B20F4045500E9E9B1 /* ThreadLocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThreadLocalStorage.swift; path = "../../../utf8-swift/swift/stdlib/public/core/ThreadLocalStorage.swift"; sourceTree = "<group>"; };
+		188817BF20F7F23C0023AA32 /* ICU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ICU.swift; path = "../../../utf8-swift/swift/stdlib/public/core/ICU.swift"; sourceTree = "<group>"; };
 		18A8967920EC45CC0097A770 /* OutputStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OutputStream.swift; path = "../../../utf8-swift/swift/stdlib/public/core/OutputStream.swift"; sourceTree = "<group>"; };
 		18A8967A20EC45CC0097A770 /* SmallString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SmallString.swift; path = "../../../utf8-swift/swift/stdlib/public/core/SmallString.swift"; sourceTree = "<group>"; };
-		18A8967B20EC45CC0097A770 /* CompilerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompilerProtocols.swift; path = "../../../utf8-swift/swift/stdlib/public/core/CompilerProtocols.swift"; sourceTree = "<group>"; };
 		18A8967C20EC45CD0097A770 /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Character.swift; path = "../../../utf8-swift/swift/stdlib/public/core/Character.swift"; sourceTree = "<group>"; };
 		18A8967D20EC45CD0097A770 /* CString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CString.swift; path = "../../../utf8-swift/swift/stdlib/public/core/CString.swift"; sourceTree = "<group>"; };
 		18A8968320EC45EA0097A770 /* StringComparable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringComparable.swift; path = "../../../utf8-swift/swift/stdlib/public/core/StringComparable.swift"; sourceTree = "<group>"; };
@@ -218,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				186B4F2B20F4045500E9E9B1 /* ThreadLocalStorage.swift */,
+				188817BF20F7F23C0023AA32 /* ICU.swift */,
 				OBJ_9 /* Scratch.swift */,
 				18A8968D20EC45EA0097A770 /* String.swift */,
 				18A8968720EC45EA0097A770 /* StringBridge.swift */,
@@ -243,7 +244,6 @@
 				18A8968E20EC45EB0097A770 /* StringVariant.swift */,
 				18A8968F20EC45EB0097A770 /* Substring.swift */,
 				18A8967C20EC45CD0097A770 /* Character.swift */,
-				18A8967B20EC45CC0097A770 /* CompilerProtocols.swift */,
 				18A8967D20EC45CD0097A770 /* CString.swift */,
 				18A8967920EC45CC0097A770 /* OutputStream.swift */,
 				18A8967A20EC45CC0097A770 /* SmallString.swift */,
@@ -356,9 +356,9 @@
 				18A8968120EC45CD0097A770 /* Character.swift in Sources */,
 				18A8967E20EC45CD0097A770 /* OutputStream.swift in Sources */,
 				OBJ_48 /* UTF8String.swift in Sources */,
-				18A8968020EC45CD0097A770 /* CompilerProtocols.swift in Sources */,
 				18A8969D20EC45EC0097A770 /* StringHashable.swift in Sources */,
 				18A8969E20EC45EC0097A770 /* StringGuts.swift in Sources */,
+				188817C020F7F23C0023AA32 /* ICU.swift in Sources */,
 				18A896B020EC45EC0097A770 /* StringGraphemeBreaking.swift in Sources */,
 				18A896A020EC45EC0097A770 /* StringObject.swift in Sources */,
 				18A8969B20EC45EC0097A770 /* StringComparable.swift in Sources */,
