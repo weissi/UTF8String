@@ -1,3 +1,3 @@
 # UTF8String
 
-A description of this package.
+Just some shims, hacks, etc., so that portions of the standard library can be built via an SPM package.
