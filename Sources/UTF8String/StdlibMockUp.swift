@@ -1,9 +1,21 @@
 // Needed for bridging
 import Foundation
 
-//public typealias Builtin = SwiftBuiltin
+// Mockups from Builtin.swift
+@inlinable
+internal var _objCTaggedPointerBits: UInt {
+  @inline(__always) get { return UInt(_swift_BridgeObject_TaggedPointerBits) }
+}
+@inlinable @inline(__always)
+internal func _isObjCTaggedPointer(_ x: AnyObject) -> Bool {
+  return (Builtin.reinterpretCast(x) & _objCTaggedPointerBits) != 0
+}
+@inlinable @inline(__always)
+internal func _isObjCTaggedPointer(_ x: UInt) -> Bool {
+  return (x & _objCTaggedPointerBits) != 0
+}
 
-// TODO: Temporary, remove when StringIndex.swift migrates
+
 extension String {
   @inlinable // FIXME(sil-serialize-all)
   public init<Subject>(describing instance: Subject) {
@@ -11,6 +23,7 @@ extension String {
   }
 }
 
+// Mockup from Array shared code
 @inlinable
 internal func _growArrayCapacity(_ capacity: Int) -> Int {
   return capacity * 2
@@ -31,6 +44,7 @@ internal func _growArrayCapacity(_ capacity: Int) -> Int {
 //  }
 //}
 
+// Mockup from UnicodeScalar.swift
 extension Unicode.Scalar {
   public init(_unchecked v: UInt32) {
     self = Unicode.Scalar(v)._unsafelyUnwrappedUnchecked
@@ -46,6 +60,9 @@ extension String {
     let bufPtr = UnsafeBufferPointer(
       start: s.utf8Start, count: s.utf8CodeUnitCount)
     self.init(_StringGuts(bufPtr, isKnownASCII: s.isASCII))
+  }
+  public init(_ s: Swift.String) {
+    self.init(decoding: s.utf8, as: UTF8.self)
   }
 
   public var asSwiftString: Swift.String {
