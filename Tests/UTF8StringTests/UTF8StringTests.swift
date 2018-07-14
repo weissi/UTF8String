@@ -2,8 +2,14 @@ import XCTest
 @testable import UTF8String
 
 func compareEqual(_ str: UTF8String.String, _ swiftStr:  Swift.String) -> Bool {
-  return str.map { Array($0.unicodeScalars) }
-    == swiftStr.map { Array($0.unicodeScalars) }
+  guard str.map({ Array($0.unicodeScalars) })
+        == swiftStr.map({ Array($0.unicodeScalars) })
+  else { return false}
+  guard str.utf8.elementsEqual(swiftStr.utf8),
+        str.utf16.elementsEqual(swiftStr.utf16),
+        str.unicodeScalars.elementsEqual(swiftStr.unicodeScalars)
+  else { return false }
+  return true
 }
 
 final class UTF8StringTests: XCTestCase {
@@ -21,6 +27,8 @@ final class UTF8StringTests: XCTestCase {
     print("--- Attemping to greet the world ---")
     print(hello)
     print("--- End attempt ---")
+
+    expectTrue(compareEqual(hello, "Hello, world!"))
   }
 
   func testUTF8View() {
@@ -51,13 +59,18 @@ final class UTF8StringTests: XCTestCase {
 
     expectTrue(bridgedSmol._guts._object.isSmall)
 
-    expectTrue(compareEqual(bridgedSmol, "abc"))
+    let abc = "abc"
+    expectTrue(compareEqual(bridgedSmol, abc))
+    expectEqualSequence(bridgedSmol.utf8, abc.utf8)
+    expectEqualSequence(bridgedSmol.utf16, abc.utf16)
+    expectEqualSequence(bridgedSmol.unicodeScalars, abc.unicodeScalars)
 
-    let bridgedLarge = UTF8String.String(_cocoaString: """
-      abcdefghijklmnopqrstuvwxyz
-      """ as NSString)
-    print(bridgedLarge)
-    expectTrue(compareEqual(bridgedLarge, "abcdefghijklmnopqrstuvwxyz"))
+
+    // NOTE: literal intentional for testing purposes...
+    let bridgedLarge = UTF8String.String(_cocoaString: "abcdefghijklmnopqrstuvwxyz" as NSString)
+
+    let alphabet = "abcdefghijklmnopqrstuvwxyz"
+    expectTrue(compareEqual(bridgedLarge, alphabet))
   }
 
 //  static var allTests = [
