@@ -44,6 +44,33 @@ internal func _growArrayCapacity(_ capacity: Int) -> Int {
 //  }
 //}
 
+// Mockup from Assert.swift
+//@inlinable @_transparent
+//public func fatalError(
+//  _ message: @autoclosure () -> String = String(),
+//  file: StaticString = #file, line: UInt = #line
+//) -> Never {
+//  Swift.fatalError()
+//}
+@inlinable @_transparent
+public func _sanityCheck(
+  _ condition: @autoclosure () -> Bool, _ message: Swift.StaticString = Swift.StaticString(),
+  file: StaticString = #file, line: UInt = #line
+  ) {
+  #if INTERNAL_CHECKS_ENABLED
+  guard condition() else {
+    _preconditionFailure(message, file: file, line: line)
+  }
+  #endif
+}
+@inlinable @_transparent
+public func _sanityCheckFailure(
+  _ message: StaticString = StaticString(),
+  file: StaticString = #file, line: UInt = #line
+  ) -> Never {
+  _sanityCheck(false, message, file: file, line: line)
+}
+
 // Mockup from UnicodeScalar.swift
 extension Unicode.Scalar {
   public init(_unchecked v: UInt32) {
