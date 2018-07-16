@@ -1,15 +1,17 @@
 import XCTest
 @testable import UTF8String
 
-func compareEqual(_ str: UTF8String.String, _ swiftStr:  Swift.String) -> Bool {
+func expectPrototypeEquivalence(
+  _ str: UTF8String.String, _ swiftStr:  Swift.String
+) {
   guard str.map({ Array($0.unicodeScalars) })
         == swiftStr.map({ Array($0.unicodeScalars) })
-  else { return false}
+  else { expectTrue(false) ; return }
   guard str.utf8.elementsEqual(swiftStr.utf8),
         str.utf16.elementsEqual(swiftStr.utf16),
         str.unicodeScalars.elementsEqual(swiftStr.unicodeScalars)
-  else { return false }
-  return true
+  else { expectTrue(false) ; return }
+  expectTrue(true)
 }
 
 final class UTF8StringTests: XCTestCase {
@@ -28,7 +30,7 @@ final class UTF8StringTests: XCTestCase {
     print(hello)
     print("--- End attempt ---")
 
-    expectTrue(compareEqual(hello, "Hello, world!"))
+    expectPrototypeEquivalence(hello, "Hello, world!")
   }
 
   func testUTF8View() {
@@ -51,7 +53,7 @@ final class UTF8StringTests: XCTestCase {
 
   func testCharacterView() {
     expectEqual(swiftStr.count, str.count)
-    expectTrue(compareEqual(str, swiftStr))
+    expectPrototypeEquivalence(str, swiftStr)
   }
 
   func testBridging() {
@@ -60,7 +62,7 @@ final class UTF8StringTests: XCTestCase {
     expectTrue(bridgedSmol._guts._object.isSmall)
 
     let abc = "abc"
-    expectTrue(compareEqual(bridgedSmol, abc))
+    expectPrototypeEquivalence(bridgedSmol, abc)
     expectEqualSequence(bridgedSmol.utf8, abc.utf8)
     expectEqualSequence(bridgedSmol.utf16, abc.utf16)
     expectEqualSequence(bridgedSmol.unicodeScalars, abc.unicodeScalars)
@@ -70,7 +72,26 @@ final class UTF8StringTests: XCTestCase {
     let bridgedLarge = UTF8String.String(_cocoaString: "abcdefghijklmnopqrstuvwxyz" as NSString)
 
     let alphabet = "abcdefghijklmnopqrstuvwxyz"
-    expectTrue(compareEqual(bridgedLarge, alphabet))
+    expectPrototypeEquivalence(bridgedLarge, alphabet)
+  }
+
+  func testComparision() {
+    let cafe = "café" as UTF8String.String
+    let cafe2 = "cafe\u{301}" as UTF8String.String
+
+    let swiftCafe = "café"
+    let swiftCafe2 = "cafe\u{301}"
+
+    print(cafe)
+    print(cafe2)
+
+    expectPrototypeEquivalence(cafe, swiftCafe)
+    expectPrototypeEquivalence(cafe2, swiftCafe2)
+    expectFalse(cafe.utf8.elementsEqual(cafe2.utf8))
+    expectFalse(cafe.unicodeScalars.elementsEqual(cafe2.unicodeScalars))
+
+    expectEqual(swiftCafe, swiftCafe2)
+    expectEqual(cafe, cafe2)
   }
 
 //  static var allTests = [
