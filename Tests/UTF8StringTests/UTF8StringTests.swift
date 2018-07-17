@@ -18,6 +18,12 @@ final class UTF8StringTests: XCTestCase {
   let swiftStr = "the quick 🦊 jumped over the lazy brown 🐶"
   let str = "the quick 🦊 jumped over the lazy brown 🐶" as UTF8String.String
 
+  let cafe = "café" as UTF8String.String
+  let cafe2 = "cafe\u{301}" as UTF8String.String
+
+  let swiftCafe = "café"
+  let swiftCafe2 = "cafe\u{301}"
+
   func testExample() {
     // Make sure the types are different
     expectFalse(type(of: swiftStr) == type(of: str))
@@ -76,11 +82,6 @@ final class UTF8StringTests: XCTestCase {
   }
 
   func testComparision() {
-    let cafe = "café" as UTF8String.String
-    let cafe2 = "cafe\u{301}" as UTF8String.String
-
-    let swiftCafe = "café"
-    let swiftCafe2 = "cafe\u{301}"
 
     print(cafe)
     print(cafe2)
@@ -100,6 +101,30 @@ final class UTF8StringTests: XCTestCase {
 
     expectFalse(cafe.unicodeScalars.elementsEqual(cafe2.unicodeScalars))
     expectEqual(cafe.hashValue, cafe2.hashValue)
+  }
+
+  func testSorting() {
+    let abc = "abc" as UTF8String.String
+    let swiftABC = "abc"
+
+    let def = "def" as UTF8String.String
+    let swiftDEF = "def"
+
+    let arr = [def, cafe, str, abc].shuffled().sorted()
+    let swiftArr = [
+      swiftDEF, swiftCafe, swiftStr, swiftABC
+    ].shuffled().sorted()
+
+    for (x, y) in zip(arr, swiftArr) {
+      expectPrototypeEquivalence(x, y)
+    }
+
+    expectEqualSequence(
+      (arr + [cafe2]).shuffled().sorted(),
+      [abc, cafe, cafe2, def, str])
+    expectEqualSequence(
+      (arr + [cafe2]).shuffled().sorted(),
+      [abc, cafe2, cafe, def, str])
   }
 
 //  static var allTests = [
