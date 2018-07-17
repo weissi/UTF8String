@@ -94,7 +94,16 @@ final class UTF8StringTests: XCTestCase {
     expectEqual(cafe, cafe2)
   }
 
+  func testHashing() {
+    let cafe = "café" as UTF8String.String
+    let cafe2 = "cafe\u{301}" as UTF8String.String
+
+    expectFalse(cafe.unicodeScalars.elementsEqual(cafe2.unicodeScalars))
+    expectEqual(cafe.hashValue, cafe2.hashValue)
+  }
+
 //  static var allTests = [
 //    ("testExample", testExample),
 //    ]
 }
+
