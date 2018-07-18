@@ -19,7 +19,7 @@ internal func _isObjCTaggedPointer(_ x: UInt) -> Bool {
 extension String {
   @inlinable // FIXME(sil-serialize-all)
   public init<Subject>(describing instance: Subject) {
-    fatalError()
+    self.init(Swift.String(describing: instance))
   }
 }
 
@@ -89,7 +89,8 @@ extension String {
     self.init(_StringGuts(bufPtr, isKnownASCII: s.isASCII))
   }
   public init(_ s: Swift.String) {
-    self.init(decoding: s.utf8, as: UTF8.self)
+    let codeUnits = Array(s.utf8)
+    self = codeUnits.withUnsafeBufferPointer { String._uncheckedFromUTF8($0) }
   }
 
   public var asSwiftString: Swift.String {
@@ -97,15 +98,34 @@ extension String {
   }
 }
 
-// Mock up print(str)
-public func print(_ s: String) {
-  print(s.asSwiftString)
+public func print(
+  _ items: Any...,
+  separator: String = " ",
+  terminator: String = "\n",
+  to output: inout String
+) {
+  var swiftStr = Swift.String()
+  var prefix: Swift.String = ""
+  for item in items {
+    Swift.print(prefix, separator: "", terminator: "", to: &swiftStr)
+    Swift.print(
+      item, separator: "", terminator: Swift.String(), to: &swiftStr)
+    prefix = separator.asSwiftString
+  }
+  Swift.print(
+    "", separator: "", terminator: terminator.asSwiftString, to: &swiftStr)
+  output += String(swiftStr)
 }
 
-// Mock up dump(str)
-public func dump(_ s: String) {
-  dump(s.asSwiftString)
-}
+//// Mock up print(str)
+//public func print(_ s: String) {
+//  print(s.asSwiftString)
+//}
+//
+//// Mock up dump(str)
+//public func dump(_ s: String) {
+//  dump(s.asSwiftString)
+//}
 
 
 

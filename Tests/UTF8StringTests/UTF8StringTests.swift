@@ -127,6 +127,36 @@ final class UTF8StringTests: XCTestCase {
       [abc, cafe2, cafe, def, str])
   }
 
+  func testInterpolation() {
+    let def = "def" as UTF8String.String
+    let swiftDEF = "def"
+
+    let interp = "abc\(def)ghijklmnop" as UTF8String.String
+    let swiftInterp = "abc\(swiftDEF)ghijklmnop"
+
+    expectPrototypeEquivalence(interp, swiftInterp)
+
+    let uniInterp = "abc\(str)" as UTF8String.String
+    let swiftUniInterp = "abc\(swiftStr)"
+
+    expectPrototypeEquivalence(uniInterp, swiftUniInterp)
+
+
+  }
+
+  func testPrinting() {
+    var result = "" as UTF8String.String
+    var swiftResult = ""
+
+    UTF8String.print(1, to: &result)
+    print(1, to: &swiftResult)
+
+    UTF8String.print(5.25, to: &result)
+    print(5.25, to: &swiftResult)
+
+    expectPrototypeEquivalence(result, swiftResult)
+  }
+
 //  static var allTests = [
 //    ("testExample", testExample),
 //    ]

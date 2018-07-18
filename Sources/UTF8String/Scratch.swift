@@ -1,8 +1,8 @@
 
-@usableFromInline
-func helloWorld() {
-  print("Hello, world!")
-}
+//@usableFromInline
+//func helloWorld() {
+//  print("Hello, world!")
+//}
 
 //
 // Test out some bit formations to see the price of forming immediates
