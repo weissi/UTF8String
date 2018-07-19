@@ -157,6 +157,32 @@ final class UTF8StringTests: XCTestCase {
     expectPrototypeEquivalence(result, swiftResult)
   }
 
+  func testCString() {
+    let cStr = str.utf8CString
+    let swiftCStr = swiftStr.utf8CString
+    expectEqual(cStr, swiftCStr)
+
+    // TODO: others...
+  }
+
+  func testStringCreate() {
+    let utf8 = UTF8String.String(decoding: str.utf8, as: UTF8.self)
+    let utf16 = UTF8String.String(decoding: str.utf16, as: UTF16.self)
+    let utf32 = UTF8String.String(
+      decoding: str.unicodeScalars.map { $0.value }, as: UTF32.self)
+
+    let swiftUTF8 = Swift.String(decoding: swiftStr.utf8, as: UTF8.self)
+    let swiftUTF16 = Swift.String(decoding: swiftStr.utf16, as: UTF16.self)
+    let swiftUTF32 = Swift.String(
+      decoding: swiftStr.unicodeScalars.map { $0.value }, as: UTF32.self)
+
+    expectPrototypeEquivalence(utf8, swiftUTF8)
+    expectPrototypeEquivalence(utf16, swiftUTF16)
+    expectPrototypeEquivalence(utf32, swiftUTF32)
+
+    // TODO: others...
+  }
+
 //  static var allTests = [
 //    ("testExample", testExample),
 //    ]
