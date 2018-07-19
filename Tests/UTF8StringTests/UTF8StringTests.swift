@@ -185,6 +185,14 @@ final class UTF8StringTests: XCTestCase {
     // TODO: others...
   }
 
+  func testSubstring() {
+    let subStr = str[...]
+
+    expectPrototypeEquivalence(String(subStr), swiftStr)
+
+    // TODO: other slicing...
+  }
+
 //  static var allTests = [
 //    ("testExample", testExample),
 //    ]
