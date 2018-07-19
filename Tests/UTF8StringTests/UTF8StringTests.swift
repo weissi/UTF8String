@@ -101,6 +101,8 @@ final class UTF8StringTests: XCTestCase {
 
     expectFalse(cafe.unicodeScalars.elementsEqual(cafe2.unicodeScalars))
     expectEqual(cafe.hashValue, cafe2.hashValue)
+
+    expectEqual(cafe.map { $0.hashValue }, cafe2.map { $0.hashValue })
   }
 
   func testSorting() {
