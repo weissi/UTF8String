@@ -96,6 +96,12 @@ extension String {
   public var asSwiftString: Swift.String {
     return Swift.String(decoding: self.utf8, as: UTF8.self)
   }
+
+  // From Mirror.swift
+  public init<Subject>(reflecting subject: Subject) {
+    self.init(Swift.String(reflecting: subject))
+  }
+
 }
 
 public func print(

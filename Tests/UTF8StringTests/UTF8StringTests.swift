@@ -24,6 +24,11 @@ final class UTF8StringTests: XCTestCase {
   let swiftCafe = "café"
   let swiftCafe2 = "cafe\u{301}"
 
+  let abc = "abc" as UTF8String.String
+  let swiftABC = "abc"
+  let def = "def" as UTF8String.String
+  let swiftDEF = "def"
+
   func testExample() {
     // Make sure the types are different
     expectFalse(type(of: swiftStr) == type(of: str))
@@ -67,11 +72,14 @@ final class UTF8StringTests: XCTestCase {
 
     expectTrue(bridgedSmol._guts._object.isSmall)
 
-    let abc = "abc"
-    expectPrototypeEquivalence(bridgedSmol, abc)
+    expectPrototypeEquivalence(bridgedSmol, swiftABC)
     expectEqualSequence(bridgedSmol.utf8, abc.utf8)
     expectEqualSequence(bridgedSmol.utf16, abc.utf16)
     expectEqualSequence(bridgedSmol.unicodeScalars, abc.unicodeScalars)
+
+    expectPrototypeEquivalence(
+      UTF8String.String(_cocoaString: bridgedSmol._bridgeToObjectiveCImpl()),
+      swiftABC)
 
 
     // NOTE: literal intentional for testing purposes...
@@ -96,9 +104,6 @@ final class UTF8StringTests: XCTestCase {
   }
 
   func testHashing() {
-    let cafe = "café" as UTF8String.String
-    let cafe2 = "cafe\u{301}" as UTF8String.String
-
     expectFalse(cafe.unicodeScalars.elementsEqual(cafe2.unicodeScalars))
     expectEqual(cafe.hashValue, cafe2.hashValue)
 
@@ -106,12 +111,6 @@ final class UTF8StringTests: XCTestCase {
   }
 
   func testSorting() {
-    let abc = "abc" as UTF8String.String
-    let swiftABC = "abc"
-
-    let def = "def" as UTF8String.String
-    let swiftDEF = "def"
-
     let arr = [def, cafe, str, abc].shuffled().sorted()
     let swiftArr = [
       swiftDEF, swiftCafe, swiftStr, swiftABC
@@ -130,8 +129,6 @@ final class UTF8StringTests: XCTestCase {
   }
 
   func testInterpolation() {
-    let def = "def" as UTF8String.String
-    let swiftDEF = "def"
 
     let interp = "abc\(def)ghijklmnop" as UTF8String.String
     let swiftInterp = "abc\(swiftDEF)ghijklmnop"
@@ -191,6 +188,21 @@ final class UTF8StringTests: XCTestCase {
     expectPrototypeEquivalence(String(subStr), swiftStr)
 
     // TODO: other slicing...
+  }
+
+  func testJoined() {
+    let joined = [str, abc, cafe, def].joined()
+    let swiftJoined = [swiftStr, swiftABC, swiftCafe, swiftDEF].joined()
+
+    expectPrototypeEquivalence(joined, swiftJoined)
+
+    let joined2 = [str, abc, def].joined(
+      separator: "😀" as UTF8String.String)
+    let swiftJoined2 = [swiftStr, swiftABC, swiftDEF].joined(separator: "😀")
+
+    expectPrototypeEquivalence(joined2, swiftJoined2)
+
+
   }
 
 //  static var allTests = [
