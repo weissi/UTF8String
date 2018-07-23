@@ -87,6 +87,12 @@ final class UTF8StringTests: XCTestCase {
 
     let alphabet = "abcdefghijklmnopqrstuvwxyz"
     expectPrototypeEquivalence(bridgedLarge, alphabet)
+
+    let uniBridged = UTF8String.String(_cocoaString: "café" as NSString)
+    expectEqualSequence(uniBridged.utf8, cafe.utf8)
+    expectEqualSequence(uniBridged.utf16, cafe.utf16)
+    expectEqualSequence(uniBridged.unicodeScalars, cafe.unicodeScalars)
+//    expectPrototypeEquivalence(uniBridged, swiftCafe)
   }
 
   func testComparision() {
