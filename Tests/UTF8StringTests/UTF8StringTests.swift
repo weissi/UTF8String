@@ -4,13 +4,23 @@ import XCTest
 func expectPrototypeEquivalence(
   _ str: UTF8String.String, _ swiftStr:  Swift.String
 ) {
-  guard str.map({ Array($0.unicodeScalars) })
-        == swiftStr.map({ Array($0.unicodeScalars) })
+  guard str.count == swiftStr.count else { expectTrue(false) ; return }
+
+  let strChars = str.map({ Array($0.unicodeScalars) })
+  guard strChars == swiftStr.map({ Array($0.unicodeScalars) })
   else { expectTrue(false) ; return }
+
   guard str.utf8.elementsEqual(swiftStr.utf8),
         str.utf16.elementsEqual(swiftStr.utf16),
         str.unicodeScalars.elementsEqual(swiftStr.unicodeScalars)
   else { expectTrue(false) ; return }
+
+  guard str.reversed().map({ Array($0.unicodeScalars) })
+    == swiftStr.reversed().map({ Array($0.unicodeScalars) })
+    else { expectTrue(false) ; return }
+
+  // TODO: All other views in reverse as well
+
   expectTrue(true)
 }
 
@@ -89,10 +99,11 @@ final class UTF8StringTests: XCTestCase {
     expectPrototypeEquivalence(bridgedLarge, alphabet)
 
     let uniBridged = UTF8String.String(_cocoaString: "café" as NSString)
-    expectEqualSequence(uniBridged.utf8, cafe.utf8)
-    expectEqualSequence(uniBridged.utf16, cafe.utf16)
-    expectEqualSequence(uniBridged.unicodeScalars, cafe.unicodeScalars)
-//    expectPrototypeEquivalence(uniBridged, swiftCafe)
+    expectPrototypeEquivalence(uniBridged, swiftCafe)
+
+    let uniSMPBridged = UTF8String.String(_cocoaString: "abc𓀀🐶🦔défg" as NSString)
+    let swiftSMP = "abc𓀀🐶🦔défg"
+    expectPrototypeEquivalence(uniSMPBridged, swiftSMP)
   }
 
   func testComparision() {
