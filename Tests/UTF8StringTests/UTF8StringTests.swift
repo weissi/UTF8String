@@ -4,22 +4,33 @@ import XCTest
 func expectPrototypeEquivalence(
   _ str: UTF8String.String, _ swiftStr:  Swift.String
 ) {
-  guard str.count == swiftStr.count else { expectTrue(false) ; return }
+
+  guard str.count == swiftStr.count else { fatalError() }
 
   let strChars = str.map({ Array($0.unicodeScalars) })
   guard strChars == swiftStr.map({ Array($0.unicodeScalars) })
-  else { expectTrue(false) ; return }
+  else { fatalError() }
 
   guard str.utf8.elementsEqual(swiftStr.utf8),
         str.utf16.elementsEqual(swiftStr.utf16),
         str.unicodeScalars.elementsEqual(swiftStr.unicodeScalars)
-  else { expectTrue(false) ; return }
+  else { fatalError() }
+
+  // In reverse:
 
   guard str.reversed().map({ Array($0.unicodeScalars) })
     == swiftStr.reversed().map({ Array($0.unicodeScalars) })
-    else { expectTrue(false) ; return }
+  else { fatalError() }
 
-  // TODO: All other views in reverse as well
+  // TODO: other views
+//  guard str.utf8.reversed().elementsEqual(swiftStr.utf8.reversed())
+//  else { fatalError() }
+//  guard str.utf16.reversed().elementsEqual(swiftStr.utf16.reversed())
+//  else { fatalError() }
+//
+//  guard str.unicodeScalars.reversed().elementsEqual(
+//    swiftStr.unicodeScalars.reversed()
+//  ) else { fatalError() }
 
   expectTrue(true)
 }
@@ -177,6 +188,16 @@ final class UTF8StringTests: XCTestCase {
     let cStr = str.utf8CString
     let swiftCStr = swiftStr.utf8CString
     expectEqual(cStr, swiftCStr)
+
+    str.withCString { ptr in
+      // Test for interior pointer
+      expectEqual(ptr._asUInt8, str._guts._object.nativeUTF8.baseAddress!)
+    }
+
+    str.dropFirst().withCString { ptr in
+      // Test for interior pointer
+      expectEqual(ptr._asUInt8, 1+str._guts._object.nativeUTF8.baseAddress!)
+    }
 
     // TODO: others...
   }
