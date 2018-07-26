@@ -44,3 +44,19 @@ That branch is tied to late-July 2018 hashes from when it branched off (note tha
                 "swift-integration-tests": "e882c92e1f063f5971f11c4163414fd75356f521", 
                 "swift": milseman/utf8string,
                 "swift-corelibs-libdispatch": "5f49e8bd1403757da08a685cea9c276ccdd09b75"
+
+## Commentary
+
+This general technique should apply to anyone wanting to work on portions of the stdlib as though it were a standalone SPM package. It does have some tradeoffs though:
+
+### Downsides
+
+- Anything present is shadowed
+  - Literals will get their default type from the toolchain and not the shadow.
+- Limited by access control when using anything not shadowed
+
+### Upsides
+
+- Toolchain definitions still available
+  - Test that compare behavior differences between shadowed functionality and the toolchain's
+
