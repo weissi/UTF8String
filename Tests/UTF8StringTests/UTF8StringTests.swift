@@ -28,9 +28,9 @@ func expectPrototypeEquivalence(
 //  guard str.utf16.reversed().elementsEqual(swiftStr.utf16.reversed())
 //  else { fatalError() }
 //
-//  guard str.unicodeScalars.reversed().elementsEqual(
-//    swiftStr.unicodeScalars.reversed()
-//  ) else { fatalError() }
+  guard str.unicodeScalars.reversed().elementsEqual(
+    swiftStr.unicodeScalars.reversed()
+  ) else { fatalError() }
 
   expectTrue(true)
 }
