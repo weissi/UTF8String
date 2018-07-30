@@ -118,9 +118,6 @@
 		OBJ_11 /* UTF8String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTF8String.swift; sourceTree = "<group>"; };
 		OBJ_15 /* UTF8StringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTF8StringTests.swift; sourceTree = "<group>"; };
 		OBJ_16 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
-		OBJ_20 /* StdlibShims.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StdlibShims.swift; sourceTree = "<group>"; };
-		OBJ_21 /* StdlibUnittestShims.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StdlibUnittestShims.swift; sourceTree = "<group>"; };
-		OBJ_22 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Package.swift; path = "/Users/milseman/development/src/UTF8String/.build/checkouts/StdlibShims.git--3688164898073635632/Package.swift"; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		OBJ_9 /* Scratch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scratch.swift; sourceTree = "<group>"; };
 		"UTF8String::UTF8String::Product" /* UTF8String.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UTF8String.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -165,33 +162,6 @@
 			path = Tests/UTF8StringTests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_17 /* Dependencies */ = {
-			isa = PBXGroup;
-			children = (
-				OBJ_18 /* StdlibShims */,
-			);
-			name = Dependencies;
-			sourceTree = "<group>";
-		};
-		OBJ_18 /* StdlibShims */ = {
-			isa = PBXGroup;
-			children = (
-				OBJ_19 /* StdlibShims */,
-				OBJ_22 /* Package.swift */,
-			);
-			name = StdlibShims;
-			sourceTree = SOURCE_ROOT;
-		};
-		OBJ_19 /* StdlibShims */ = {
-			isa = PBXGroup;
-			children = (
-				OBJ_20 /* StdlibShims.swift */,
-				OBJ_21 /* StdlibUnittestShims.swift */,
-			);
-			name = StdlibShims;
-			path = ".build/checkouts/StdlibShims.git--3688164898073635632/Sources/StdlibShims";
-			sourceTree = SOURCE_ROOT;
-		};
 		OBJ_23 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -207,7 +177,6 @@
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
 				OBJ_12 /* Tests */,
-				OBJ_17 /* Dependencies */,
 				OBJ_23 /* Products */,
 			);
 			sourceTree = "<group>";
