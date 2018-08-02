@@ -47,3 +47,17 @@ This general technique should apply to anyone wanting to work on portions of the
 - Toolchain definitions still available
   - Test that compare behavior differences between shadowed functionality and the toolchain's
 
+### Building as a Standard Library
+
+The checkout can be built as a 64-bit standard library normally. We recommend one of the following invocations:
+
+* Debugging: `build-script -r --debug-swift-stdlib`
+  * Swift compiler is built with optimizations and assertions, but stdlib is full-debug
+* Testing: `build-script -r`
+  * Swift compiler and stdlib is built with both optimizations and assertions
+* Benchmarking: `build-script -R --no-assertions`
+  * Full optimizations, no debug info, no assertions
+  
+### Building as a Toolchain
+
+This is currently unsupported as we don't build on 32-bit platforms yet. Once we do, we will likely not have complete correctness of 32-bit until 64-bit is tackled.
