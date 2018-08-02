@@ -1,0 +1,122 @@
+#!/bin/bash
+
+set -eu
+
+here="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+swift_dir="$here/../../utf8-swift/swift"
+test -d "$swift_dir" || { echo "error: swift not found in '$swift_dir'"; exit 1; }
+
+swift_sha=$(git ls-remote -h git@github.com:milseman/swift.git refs/heads/utf8string | cut -f1)
+echo "- swift sha: $swift_sha"
+
+tmpfile=$(mktemp /tmp/.update-checkout_XXXXXX)
+cat >> "$tmpfile" <<EOF
+{
+    "https-clone-pattern": "https://github.com/%s.git",
+    "ssh-clone-pattern": "git@github.com:%s.git",
+    "repos": {
+        "compiler-rt": {
+            "remote": {
+                "id": "apple/swift-compiler-rt"
+            }
+        },
+        "llvm": {
+            "remote": {
+                "id": "apple/swift-llvm"
+            }
+        },
+        "swift-xcode-playground-support": {
+            "remote": {
+                "id": "apple/swift-xcode-playground-support"
+            }
+        },
+        "swift-corelibs-foundation": {
+            "remote": {
+                "id": "apple/swift-corelibs-foundation"
+            }
+        },
+        "clang": {
+            "remote": {
+                "id": "apple/swift-clang"
+            }
+        },
+        "llbuild": {
+            "remote": {
+                "id": "apple/swift-llbuild"
+            }
+        },
+        "cmark": {
+            "remote": {
+                "id": "apple/swift-cmark"
+            }
+        },
+        "lldb": {
+            "remote": {
+                "id": "apple/swift-lldb"
+            }
+        },
+        "swift-corelibs-xctest": {
+            "remote": {
+                "id": "apple/swift-corelibs-xctest"
+            }
+        },
+        "ninja": {
+            "remote": {
+                "id": "ninja-build/ninja"
+            }
+        },
+        "swift-integration-tests": {
+            "remote": {
+                "id": "apple/swift-integration-tests"
+            }
+        },
+        "swiftpm": {
+            "remote": {
+                "id": "apple/swift-package-manager"
+            }
+        },
+        "swift": {
+            "remote": {
+                "id": "apple/swift"
+            }
+        },
+        "swift-corelibs-libdispatch": {
+            "remote": {
+                "id": "apple/swift-corelibs-libdispatch"
+            }
+        }
+    },
+    "branch-schemes": {
+        "utf8string": {
+                "repos": {
+                "compiler-rt": "eb14686023b616db2835eab7709743f60fe832a9",
+                "llvm": "a4d539e482ca76290f3db6b775203ae230b34d42",
+                "swift-xcode-playground-support": "f2e299a37eb6531918b6c9ce7f555b54d68d92d4",
+                "swift-corelibs-foundation": "ba812f3b3617d43d495c153c7a34f04498880faf",
+                "clang": "773ac0251a7ea94c0b58d96353d4210a7eb2aeef",
+                "llbuild": "7ab27b6a5e4988392bcc056fd432c3f9652e68bd",
+                "cmark": "d875488a6a95d5487b7c675f79a8dafef210a65f",
+                "lldb": "873a338b5d8b74ed504c5e02e52d6972fe9bc513",
+                "swiftpm": "5449a25666b8757b5a926b70eb25e372f06c547a",
+                "swift-corelibs-xctest": "11b22e5ed8d6ffc2734810ae6d3b56160092745b",
+                "ninja": "253e94c1fa511704baeb61cf69995bbf09ba435e",
+                "swift-integration-tests": "e882c92e1f063f5971f11c4163414fd75356f521",
+                "swift": "$swift_sha",
+                "swift-corelibs-libdispatch": "5f49e8bd1403757da08a685cea9c276ccdd09b75"
+            },
+            "aliases": [
+                "utf8string"
+            ]
+        }
+    }
+}
+EOF
+
+(
+cd "$swift_dir"
+utils/update-checkout --config="$tmpfile" --scheme=utf8string
+)
+
+rm "$tmpfile"
+
+echo OK
