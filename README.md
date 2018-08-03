@@ -4,11 +4,12 @@ Just some shims, hacks, etc., so that portions of the standard library can be bu
 
 ## Set up
 
-### 1. Install a recent trunk development toolchain
+### 1. Install a recent trunk development toolchain (master)
 
-Download and install one from [swift.org](https://swift.org/download/#snapshots). Choose "Trunk Development (master)"
+This package was developed using the Xcode-10 beta. It uses shims and other functionality that's recently been committed to master but is not on a release branch yet, so download a recent toolchain:
 
-This package was developed using the Xcode-10 beta.
+Download and install a toolchain from [swift.org](https://swift.org/download/#snapshots). Choose "Trunk Development (master)".
+
 
 ### 2. Clone the repos
 
