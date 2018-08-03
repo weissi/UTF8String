@@ -14,6 +14,9 @@ internal func _isObjCTaggedPointer(_ x: AnyObject) -> Bool {
 internal func _isObjCTaggedPointer(_ x: UInt) -> Bool {
   return (x & _objCTaggedPointerBits) != 0
 }
+public func _branchHint(_ actual: Bool, expected: Bool) -> Bool {
+  return actual
+}
 
 
 extension String {
@@ -56,19 +59,64 @@ internal func _growArrayCapacity(_ capacity: Int) -> Int {
 public func _sanityCheck(
   _ condition: @autoclosure () -> Bool, _ message: Swift.StaticString = Swift.StaticString(),
   file: StaticString = #file, line: UInt = #line
-  ) {
+) {
   #if INTERNAL_CHECKS_ENABLED
-  guard condition() else {
-    _preconditionFailure(message, file: file, line: line)
-  }
+  // NOTE: We're just mocking stuff up, not honoring configuration
+  _precondition(condition, message, file: file, line: line)
   #endif
 }
-@inlinable @_transparent
 public func _sanityCheckFailure(
   _ message: StaticString = StaticString(),
   file: StaticString = #file, line: UInt = #line
-  ) -> Never {
-  _sanityCheck(false, message, file: file, line: line)
+) -> Never {
+  // NOTE: We're just mocking stuff up, not honoring configuration
+  _preconditionFailure(message, file: file, line: line)
+}
+
+public func _precondition(
+  _ condition: @autoclosure () -> Bool, _ message: StaticString = StaticString(),
+  file: StaticString = #file, line: UInt = #line
+) {
+  guard condition() else {
+    _preconditionFailure(message, file: file, line: line)
+  }
+}
+public func _preconditionFailure(
+  _ message: StaticString = StaticString(),
+  file: StaticString = #file, line: UInt = #line
+) -> Never {
+  Swift.fatalError(message.description, file: file, line: line)
+}
+public func _debugPrecondition(
+  _ condition: @autoclosure () -> Bool, _ message: StaticString = StaticString(),
+  file: StaticString = #file, line: UInt = #line
+  ) {
+  // NOTE: We're just mocking stuff up, not honoring configuration
+  _precondition(condition, message, file: file, line: line)
+}
+//public func _debugPreconditionFailure(
+//  _ message: StaticString = StaticString(),
+//  file: StaticString = #file, line: UInt = #line
+//  ) -> Never {
+//  if _slowPath(_isDebugAssertConfiguration()) {
+//    _precondition(false, message, file: file, line: line)
+//  }
+//  _conditionallyUnreachable()
+//}
+
+
+
+// Mock unwrapping
+extension Optional {
+  public var _unsafelyUnwrappedUnchecked: Wrapped {
+    @inline(__always)
+    get {
+      if let x = self {
+        return x
+      }
+      _sanityCheckFailure("_unsafelyUnwrappedUnchecked of nil optional")
+    }
+  }
 }
 
 // Mockup from UnicodeScalar.swift
