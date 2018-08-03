@@ -6,7 +6,7 @@ Just some shims, hacks, etc., so that portions of the standard library can be bu
 
 ### 1. Install a recent trunk development toolchain
 
-Download and install one from swift.org/download.
+Download and install one from [swift.org](https://swift.org/download/#snapshots). Choose "Trunk Development (master)"
 
 This package was developed using the Xcode-10 beta.
 
