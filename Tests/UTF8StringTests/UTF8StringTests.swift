@@ -1,6 +1,28 @@
 import XCTest
 @testable import UTF8String
 
+extension Swift.String: Error {}
+
+// Testing helper inits
+extension _SmallString {
+  init?(_ codeUnits: Array<UInt8>) {
+    guard let smol = codeUnits.withUnsafeBufferPointer({
+      return _SmallString($0)
+    }) else {
+      return nil
+    }
+    self = smol
+  }
+//  init?(_ codeUnits: Array<UInt16>) {
+//    guard let smol = codeUnits.withUnsafeBufferPointer({
+//      return _SmallString($0)
+//    }) else {
+//      return nil
+//    }
+//    self = smol
+//  }
+}
+
 func expectPrototypeEquivalence(
   _ str: UTF8String.String, _ swiftStr:  Swift.String
 ) {
@@ -242,6 +264,100 @@ final class UTF8StringTests: XCTestCase {
 
 
   }
+
+  func verifySmallString(_ small: _SmallString, _ input: Swift.String) {
+    expectEqual(_SmallString.capacity, small.count + small.unusedCapacity)
+    let tiny = Array(input.utf8)
+    expectEqual(tiny.count, small.count)
+    for (lhs, rhs) in zip(tiny, small) {
+      expectEqual(lhs, rhs)
+    }
+
+    // Test slicing
+    //
+    for i in 0..<small.count {
+      for j in (i+1)...small.count {
+        expectEqualSequence(tiny[i..<j], small[i..<j])
+        if j < small.count {
+          expectEqualSequence(tiny[i...j], small[i...j])
+        }
+      }
+    }
+  }
+
+  func testSmallFitsInSmall() {
+      func runTest(_ input: Swift.String) throws {
+        let tiny = Array(input.utf8)
+        // Constructed from UTF-8 code units
+        guard let small = _SmallString(tiny) else {
+          throw "Didn't fit"
+        }
+        verifySmallString(small, input)
+      }
+
+      // Pass tests
+      //
+      // TODO(UTF-8 SSO): expectDoesNotThrow({ try runTest("ab😇c") })
+      expectDoesNotThrow({ try runTest("0123456789abcde") })
+      // TODO(UTF-8 SSO): expectDoesNotThrow({ try runTest("👨‍👦") })
+      expectDoesNotThrow({ try runTest("") })
+
+      // Fail tests
+      //
+      expectThrows("Didn't fit", { try runTest("0123456789abcdef") })
+      expectThrows("Didn't fit", { try runTest("👩‍👦‍👦") })
+
+      for cu in (0 as UInt32)...(0x10FFFF as UInt32) {
+        // TODO: Iterate over all scalars when we support UTF-8, and possibly move
+        // this to validation suite.
+        guard let scalar = Unicode.Scalar(cu) else { continue }
+        guard cu <= 0x7F else { break }
+        expectDoesNotThrow({ try runTest(String(scalar)) })
+      }
+
+    }
+
+    func testSmallAppend() {
+      let strings = [
+        "",
+        "a",
+        "bc",
+        "def",
+        "hijk",
+        "lmnop",
+        "qrstuv",
+        "xyzzzzz",
+        "01234567",
+        "890123456",
+        "7890123456",
+        "78901234567",
+        "890123456789",
+        "0123456789012",
+        "34567890123456",
+        "789012345678901",
+        ]
+      let smallstrings = strings.compactMap {
+        _SmallString(Array($0.utf8))
+      }
+      expectEqual(strings.count, smallstrings.count)
+      for (small, str) in zip(smallstrings, strings) {
+        verifySmallString(small, str)
+      }
+
+      for i in 0..<smallstrings.count {
+        for j in i..<smallstrings.count {
+          let lhs = smallstrings[i]
+          let rhs = smallstrings[j]
+          if lhs.count + rhs.count > _SmallString.capacity {
+            continue
+          }
+          verifySmallString(
+            _SmallString(base: _StringGuts(lhs), appending: _StringGuts(rhs))!, strings[i] + strings[j])
+          verifySmallString(
+            _SmallString(base: _StringGuts(rhs), appending: _StringGuts(lhs))!, strings[j] + strings[i])
+        }
+      }
+    }
 
 //  static var allTests = [
 //    ("testExample", testExample),
