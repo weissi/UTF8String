@@ -18,6 +18,14 @@ public func _branchHint(_ actual: Bool, expected: Bool) -> Bool {
   return actual
 }
 
+// Mockups from Integers
+extension BinaryInteger {
+  @usableFromInline
+  internal func _description(radix: Int, uppercase: Bool) -> String {
+    let swiftStr = Swift.String(self, radix: radix, uppercase: uppercase)
+    return String(swiftStr)
+  }
+}
 
 extension String {
   @inlinable // FIXME(sil-serialize-all)

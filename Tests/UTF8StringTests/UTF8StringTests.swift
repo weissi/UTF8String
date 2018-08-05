@@ -352,9 +352,11 @@ final class UTF8StringTests: XCTestCase {
             continue
           }
           verifySmallString(
-            _SmallString(base: _StringGuts(lhs), appending: _StringGuts(rhs))!, strings[i] + strings[j])
+            _SmallString(base: _StringGuts(lhs), appending: _StringGuts(rhs))!,
+            strings[i] + strings[j])
           verifySmallString(
-            _SmallString(base: _StringGuts(rhs), appending: _StringGuts(lhs))!, strings[j] + strings[i])
+            _SmallString(base: _StringGuts(rhs), appending: _StringGuts(lhs))!,
+            strings[j] + strings[i])
         }
       }
     }
