@@ -47,9 +47,10 @@ func expectPrototypeEquivalence(
   // TODO: other views
 //  guard str.utf8.reversed().elementsEqual(swiftStr.utf8.reversed())
 //  else { fatalError() }
-//  guard str.utf16.reversed().elementsEqual(swiftStr.utf16.reversed())
-//  else { fatalError() }
-//
+
+  guard str.utf16.reversed().elementsEqual(swiftStr.utf16.reversed())
+  else { fatalError() }
+
   guard str.unicodeScalars.reversed().elementsEqual(
     swiftStr.unicodeScalars.reversed()
   ) else { fatalError() }
@@ -103,6 +104,20 @@ final class UTF8StringTests: XCTestCase {
     expectEqual(swiftStr.utf16.count, str.utf16.count)
     expectEqual(Array(swiftStr.utf16), Array(str.utf16))
     expectEqualSequence(swiftStr.utf16, str.utf16)
+
+    print("old")
+    for cu in swiftStr.utf16.reversed() {
+      print(cu)
+    }
+    print("new")
+    for cu in str.utf16.reversed() {
+      print(cu)
+    }
+
+    expectEqual(swiftStr.utf16.reversed().count, str.utf16.reversed().count)
+    expectEqual(Array(swiftStr.utf16.reversed()), Array(str.utf16.reversed()))
+    expectEqualSequence(swiftStr.utf16.reversed(), str.utf16.reversed())
+
   }
 
   func testCharacterView() {
