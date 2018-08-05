@@ -45,8 +45,8 @@ func expectPrototypeEquivalence(
   else { fatalError() }
 
   // TODO: other views
-//  guard str.utf8.reversed().elementsEqual(swiftStr.utf8.reversed())
-//  else { fatalError() }
+  guard str.utf8.reversed().elementsEqual(swiftStr.utf8.reversed())
+  else { fatalError() }
 
   guard str.utf16.reversed().elementsEqual(swiftStr.utf16.reversed())
   else { fatalError() }
