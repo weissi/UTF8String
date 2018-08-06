@@ -88,6 +88,7 @@ cat >> "$tmpfile" <<EOF
     },
     "branch-schemes": {
         "utf8string": {
+            "repos": {
                 "compiler-rt": "8160e45e66b631d091f9e585e38d6e5f262ec6c8",
                 "llvm": "a4d539e482ca76290f3db6b775203ae230b34d42",
                 "swift-xcode-playground-support": "f2e299a37eb6531918b6c9ce7f555b54d68d92d4",
