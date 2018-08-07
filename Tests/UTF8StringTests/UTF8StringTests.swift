@@ -376,6 +376,28 @@ final class UTF8StringTests: XCTestCase {
       }
     }
 
+  func testReversingFlags() {
+    let palindromesWithFlags: [UTF8String.String] = ["🇬🇧", "AB 🇬🇧 BA", "α🇺🇸β🇺🇸α", "ä🇨🇳🇬🇧🇺🇸🇨🇳🇺🇸🇬🇧🇨🇳ä"]
+    let reversed = palindromesWithFlags.map { UTF8String.String($0.reversed())}
+    expectEqual(palindromesWithFlags, reversed)
+  }
+
+  func testNullTerminatedConstruction() {
+    let chunks = ["", "hello", "wörld", "👋", "😊🙃‽"]
+    let expected: Swift.String = chunks.joined()
+    let actual: UTF8String.String = chunks.compactMap {
+      ($0.utf8.map(CChar.init) + [0]).withUnsafeBufferPointer {
+        String(validatingUTF8: $0.baseAddress!)
+      }
+    }.joined()
+    expectEqual(Array(expected.utf8), Array(actual.utf8))
+  }
+
+  func testNullTerminationIsImplicitWhenOriginatingFromStringLiteral() {
+    let str: Swift.String = "hello " + "world"
+    expectEqual("hello world", UTF8String.String(validatingUTF8: str))
+  }
+
 //  static var allTests = [
 //    ("testExample", testExample),
 //    ]
