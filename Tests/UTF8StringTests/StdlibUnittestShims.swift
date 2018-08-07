@@ -40,21 +40,21 @@ public func expectFalse(
   XCTAssertFalse(try expression1(), file: file, line: line)
 }
 
-public func expectDoesNotThrow<T>(
-  _ expression1: @autoclosure () throws -> T,
+public func expectDoesNotThrow(
+  _ expression1: () throws -> Void,
   file: StaticString = #file, line: UInt = #line
   ) {
-  XCTAssertNoThrow(expression1, file: file, line: line)
+  XCTAssertNoThrow(try expression1(), file: file, line: line)
 }
 
 
-public func expectThrows<T, E: Error>(
+public func expectThrows<E: Error>(
   _ err: E,
-  _ expression1: () throws -> T,
+  _ expression1: () throws -> Void,
   file: StaticString = #file, line: UInt = #line
   ) where E: Equatable {
   do {
-    try _ = expression1()
+    try expression1()
     XCTFail("no throw", file: file, line: line)
   } catch {
     guard let e = error as? E else {
