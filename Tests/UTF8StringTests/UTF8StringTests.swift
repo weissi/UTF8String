@@ -312,9 +312,9 @@ final class UTF8StringTests: XCTestCase {
 
       // Pass tests
       //
-      // TODO(UTF-8 SSO): expectDoesNotThrow({ try runTest("ab😇c") })
+      expectDoesNotThrow({ try runTest("ab😇c") })
       expectDoesNotThrow({ try runTest("0123456789abcde") })
-      // TODO(UTF-8 SSO): expectDoesNotThrow({ try runTest("👨‍👦") })
+      expectDoesNotThrow({ try runTest("👨‍👦") })
       expectDoesNotThrow({ try runTest("") })
 
       // Fail tests
