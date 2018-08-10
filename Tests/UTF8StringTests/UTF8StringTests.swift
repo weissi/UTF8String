@@ -105,15 +105,6 @@ final class UTF8StringTests: XCTestCase {
     expectEqual(Array(swiftStr.utf16), Array(str.utf16))
     expectEqualSequence(swiftStr.utf16, str.utf16)
 
-    print("old")
-    for cu in swiftStr.utf16.reversed() {
-      print(cu)
-    }
-    print("new")
-    for cu in str.utf16.reversed() {
-      print(cu)
-    }
-
     expectEqual(swiftStr.utf16.reversed().count, str.utf16.reversed().count)
     expectEqual(Array(swiftStr.utf16.reversed()), Array(str.utf16.reversed()))
     expectEqualSequence(swiftStr.utf16.reversed(), str.utf16.reversed())
@@ -194,18 +185,18 @@ final class UTF8StringTests: XCTestCase {
   }
 
   func testInterpolation() {
+    let smolInterp = "abc\(def)g" as UTF8String.String
+    let smolSwiftInterp = "abc\(swiftDEF)g"
+    expectPrototypeEquivalence(smolInterp, smolSwiftInterp)
+
 
     let interp = "abc\(def)ghijklmnop" as UTF8String.String
     let swiftInterp = "abc\(swiftDEF)ghijklmnop"
-
     expectPrototypeEquivalence(interp, swiftInterp)
 
     let uniInterp = "abc\(str)" as UTF8String.String
     let swiftUniInterp = "abc\(swiftStr)"
-
     expectPrototypeEquivalence(uniInterp, swiftUniInterp)
-
-
   }
 
   func testPrinting() {
