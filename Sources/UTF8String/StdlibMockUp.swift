@@ -190,4 +190,35 @@ public func print(
 //}
 
 
+/// Returns `true` if `object` is uniquely referenced.
+/// This provides sanity checks on top of the Builtin.
+@_transparent
+public // @testable
+func _isUnique_native<T>(_ object: inout T) -> Bool {
+  // This could be a bridge object, single payload enum, or plain old
+  // reference. Any case it's non pointer bits must be zero, so
+  // force cast it to BridgeObject and check the spare bits.
 
+  return Bool(Builtin.isUnique_native(&object))
+}
+
+// HACK HACK HACK: The below is particularly bad, but alternative is to pull
+// in encoders...
+extension _ValidUTF8Buffer {
+  public var _biasedBits: Storage { return Builtin.reinterpretCast(self) }
+
+  internal init(_biasedBits: Storage) {
+    self = Builtin.reinterpretCast(_biasedBits)
+  }
+
+  public static var encodedReplacementCharacter : _ValidUTF8Buffer {
+    return _ValidUTF8Buffer(_biasedBits: 0xBD_BF_EF &+ 0x01_01_01)
+  }
+
+  public var _bytes: (bytes: UInt64, count: Int) {
+    let count = self.count
+    let mask: UInt64 = 1 &<< (UInt64(truncatingIfNeeded: count) &<< 3) &- 1
+    let unbiased = UInt64(truncatingIfNeeded: _biasedBits) &- 0x0101010101010101
+    return (unbiased & mask, count)
+  }
+}
