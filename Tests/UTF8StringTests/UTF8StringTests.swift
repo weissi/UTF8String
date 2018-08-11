@@ -64,9 +64,11 @@ final class UTF8StringTests: XCTestCase {
 
   let cafe = "café" as UTF8String.String
   let cafe2 = "cafe\u{301}" as UTF8String.String
-
   let swiftCafe = "café"
   let swiftCafe2 = "cafe\u{301}"
+
+  let leadingEmoji = "😀😃😂🙂😘" as UTF8String.String
+  let swiftLeadingEmoji = "😀😃😂🙂😘"
 
   let abc = "abc" as UTF8String.String
   let swiftABC = "abc"
@@ -92,6 +94,10 @@ final class UTF8StringTests: XCTestCase {
     expectEqual(swiftStr.utf8.count, str.utf8.count)
     expectEqual(Array(swiftStr.utf8), Array(str.utf8))
     expectEqualSequence(swiftStr.utf8, str.utf8)
+
+    expectEqual(swiftLeadingEmoji.utf8.count, leadingEmoji.utf8.count)
+    expectEqual(Array(swiftLeadingEmoji.utf8), Array(leadingEmoji.utf8))
+    expectEqualSequence(swiftLeadingEmoji.utf8, leadingEmoji.utf8)
   }
 
   func testUnicodeScalarView() {
@@ -109,6 +115,13 @@ final class UTF8StringTests: XCTestCase {
     expectEqual(Array(swiftStr.utf16.reversed()), Array(str.utf16.reversed()))
     expectEqualSequence(swiftStr.utf16.reversed(), str.utf16.reversed())
 
+    expectEqual(swiftLeadingEmoji.utf16.count, leadingEmoji.utf16.count)
+    expectEqual(Array(swiftLeadingEmoji.utf16), Array(leadingEmoji.utf16))
+    expectEqualSequence(swiftLeadingEmoji.utf16, leadingEmoji.utf16)
+
+    expectEqual(swiftLeadingEmoji.utf16.reversed().count, leadingEmoji.utf16.reversed().count)
+    expectEqual(Array(swiftLeadingEmoji.utf16.reversed()), Array(leadingEmoji.utf16.reversed()))
+    expectEqualSequence(swiftLeadingEmoji.utf16.reversed(), leadingEmoji.utf16.reversed())
   }
 
   func testCharacterView() {
@@ -291,83 +304,198 @@ final class UTF8StringTests: XCTestCase {
   }
 
   func testSmallFitsInSmall() {
-      func runTest(_ input: Swift.String) throws {
-        let tiny = Array(input.utf8)
-        // Constructed from UTF-8 code units
-        guard let small = _SmallString(tiny) else {
-          throw "Didn't fit"
-        }
-        verifySmallString(small, input)
+    func runTest(_ input: Swift.String) throws {
+      let tiny = Array(input.utf8)
+      // Constructed from UTF-8 code units
+      guard let small = _SmallString(tiny) else {
+        throw "Didn't fit"
       }
-
-      // Pass tests
-      //
-      expectDoesNotThrow({ try runTest("ab😇c") })
-      expectDoesNotThrow({ try runTest("0123456789abcde") })
-      expectDoesNotThrow({ try runTest("👨‍👦") })
-      expectDoesNotThrow({ try runTest("") })
-
-      // Fail tests
-      //
-      expectThrows("Didn't fit", { try runTest("0123456789abcdef") })
-      expectThrows("Didn't fit", { try runTest("👩‍👦‍👦") })
-
-      for cu in (0 as UInt32)...(0x10FFFF as UInt32) {
-        // TODO: Iterate over all scalars when we support UTF-8, and possibly move
-        // this to validation suite.
-        guard let scalar = Unicode.Scalar(cu) else { continue }
-        guard cu <= 0x7F else { break }
-        expectDoesNotThrow({ try runTest(String(scalar)) })
-      }
-
+      verifySmallString(small, input)
     }
 
-    func testSmallAppend() {
-      let strings = [
-        "",
-        "a",
-        "bc",
-        "def",
-        "hijk",
-        "lmnop",
-        "qrstuv",
-        "xyzzzzz",
-        "01234567",
-        "890123456",
-        "7890123456",
-        "78901234567",
-        "890123456789",
-        "0123456789012",
-        "34567890123456",
-        "789012345678901",
-        ]
-      let smallstrings = strings.compactMap {
-        _SmallString(Array($0.utf8))
-      }
-      expectEqual(strings.count, smallstrings.count)
-      for (small, str) in zip(smallstrings, strings) {
-        verifySmallString(small, str)
-      }
+    // Pass tests
+    //
+    expectDoesNotThrow({ try runTest("ab😇c") })
+    expectDoesNotThrow({ try runTest("0123456789abcde") })
+    expectDoesNotThrow({ try runTest("👨‍👦") })
+    expectDoesNotThrow({ try runTest("") })
 
-      for i in 0..<smallstrings.count {
-        for j in i..<smallstrings.count {
-          let lhs = smallstrings[i]
-          let rhs = smallstrings[j]
-          if lhs.count + rhs.count > _SmallString.capacity {
-            continue
-          }
-          verifySmallString(
-            _SmallString(base: _StringGuts(lhs), appending: _StringGuts(rhs))!,
-            strings[i] + strings[j])
-          verifySmallString(
-            _SmallString(base: _StringGuts(rhs), appending: _StringGuts(lhs))!,
-            strings[j] + strings[i])
+    // Fail tests
+    //
+    expectThrows("Didn't fit", { try runTest("0123456789abcdef") })
+    expectThrows("Didn't fit", { try runTest("👩‍👦‍👦") })
+
+    for cu in (0 as UInt32)...(0x10FFFF as UInt32) {
+      // TODO: Iterate over all scalars when we support UTF-8, and possibly move
+      // this to validation suite.
+      guard let scalar = Unicode.Scalar(cu) else { continue }
+      guard cu <= 0x7F else { break }
+      expectDoesNotThrow({ try runTest(String(scalar)) })
+    }
+  }
+
+  func testSmallAppend() {
+    let strings = [
+      "",
+      "a",
+      "bc",
+      "def",
+      "hijk",
+      "lmnop",
+      "qrstuv",
+      "xyzzzzz",
+      "01234567",
+      "890123456",
+      "7890123456",
+      "78901234567",
+      "890123456789",
+      "0123456789012",
+      "34567890123456",
+      "789012345678901",
+    ]
+    let smallstrings = strings.compactMap {
+      _SmallString(Array($0.utf8))
+    }
+    expectEqual(strings.count, smallstrings.count)
+    for (small, str) in zip(smallstrings, strings) {
+      verifySmallString(small, str)
+    }
+
+    for i in 0..<smallstrings.count {
+      for j in i..<smallstrings.count {
+        let lhs = smallstrings[i]
+        let rhs = smallstrings[j]
+        if lhs.count + rhs.count > _SmallString.capacity {
+          continue
         }
+        verifySmallString(
+          _SmallString(base: _StringGuts(lhs), appending: _StringGuts(rhs))!,
+          strings[i] + strings[j])
+        verifySmallString(
+          _SmallString(base: _StringGuts(rhs), appending: _StringGuts(lhs))!,
+          strings[j] + strings[i])
       }
     }
+  }
+
+  func testAppending() {
+    func hex(_ x: UInt64) -> UTF8String.String { return String(x, radix:16) }
+
+    func hexAddrVal<T>(_ x: T) -> UTF8String.String {
+      return "@0x" + hex(UInt64(unsafeBitCast(x, to: UInt.self)))
+    }
+
+    func repr(ns x: NSString) -> UTF8String.String {
+      return "\(NSStringFromClass(object_getClass(x)!))\(hexAddrVal(x)) = \"\(x)\""
+    }
+
+    func repr(rep x: UTF8String._StringRepresentation) -> UTF8String.String {
+      switch x._form {
+      case ._small:
+        return """
+        Small(count: \(x._count))
+        """
+      case ._cocoa(let object):
+        return """
+        Cocoa(\
+        owner: \(hexAddrVal(object)), \
+        count: \(x._count))
+        """
+      case ._native(let object):
+        return """
+        Native(\
+        owner: \(hexAddrVal(object)), \
+        count: \(x._count), \
+        capacity: \(x._capacity))
+        """
+      case ._immortal(_):
+        return """
+        Unmanaged(count: \(x._count))
+        """
+      }
+    }
+
+    func repr(_ x: UTF8String.String) -> UTF8String.String {
+      return "String(\(repr(rep: x._classify()))) = \"\(x)\""
+    }
+  }
+
+  func testViewCounts() {
+
+
+    for s in simpleStrings {
+      validateViewCount(s, for: s)
+      validateViewCount(s.utf8, for: s)
+      validateViewCount(s.utf16, for: s)
+      validateViewCount(s.unicodeScalars, for: s)
+
+      validateViewCount(s[...], for: s)
+      validateViewCount(s[...].utf8, for: s)
+      validateViewCount(s[...].utf16, for: s)
+      validateViewCount(s[...].unicodeScalars, for: s)
+    }
+  }
 
 //  static var allTests = [
 //    ("testExample", testExample),
 //    ]
 }
 
+enum SimpleString: UTF8String.String {
+  case smallASCII = "abcdefg"
+  case smallUnicode = "abéÏ𓀀"
+  case largeASCII = "012345678901234567890"
+  case largeUnicode = "abéÏ012345678901234567890𓀀"
+  case emoji = "😀😃🤢🤮👩🏿‍🎤🧛🏻‍♂️🧛🏻‍♂️👩‍👩‍👦‍👦"
+}
+
+let simpleStrings: [UTF8String.String] = [
+  SimpleString.smallASCII.rawValue,
+  SimpleString.smallUnicode.rawValue,
+  SimpleString.largeASCII.rawValue,
+  SimpleString.largeUnicode.rawValue,
+  SimpleString.emoji.rawValue,
+]
+
+
+func validateViewCount<View: BidirectionalCollection>(
+  _ view: View, for string: UTF8String.String,
+//  stackTrace: SourceLocStack = SourceLocStack(),
+//  showFrame: Bool = true,
+  file: UTF8String.String = #file, line: UInt = #line
+  ) where View.Element: Equatable, View.Index == UTF8String.String.Index {
+
+//  var stackTrace = stackTrace.pushIf(showFrame, file: file, line: line)
+
+  let count = view.count
+  func expect(_ i: Int,
+              file: UTF8String.String = #file, line: UInt = #line
+    ) {
+    expectEqual(count, i//, "for String: \(string)",
+//      stackTrace: stackTrace.pushIf(showFrame, file: file, line: line),
+//      showFrame: false)
+    )
+  }
+
+  let reversedView = view.reversed()
+
+  expect(Array(view).count)
+  expect(view.indices.count)
+  expect(view.indices.reversed().count)
+  expect(reversedView.indices.count)
+  expect(view.distance(from: view.startIndex, to: view.endIndex))
+  expect(reversedView.distance(
+    from: reversedView.startIndex, to: reversedView.endIndex))
+
+  // Access the elements from the indices
+  expectEqual(Array(view), view.indices.map { view[$0] })
+  expectEqual(
+    Array(reversedView), reversedView.indices.map { reversedView[$0] })
+
+  let indicesArray = Array<UTF8String.String.Index>(view.indices)
+  for i in 0..<indicesArray.count {
+    var idx = view.startIndex
+    idx = view.index(idx, offsetBy: i)
+    expectEqual(indicesArray[i], idx)
+  }
+}
