@@ -67,8 +67,8 @@ final class UTF8StringTests: XCTestCase {
   let swiftCafe = "café"
   let swiftCafe2 = "cafe\u{301}"
 
-  let leadingEmoji = "😀😃😂🙂😘" as UTF8String.String
-  let swiftLeadingEmoji = "😀😃😂🙂😘"
+  let leadingEmoji = "😀" as UTF8String.String// 😃😂🙂😘" as UTF8String.String
+  let swiftLeadingEmoji = "😀" // 😃😂🙂😘"
 
   let abc = "abc" as UTF8String.String
   let swiftABC = "abc"
@@ -434,6 +434,172 @@ final class UTF8StringTests: XCTestCase {
       validateViewCount(s[...].utf16, for: s)
       validateViewCount(s[...].unicodeScalars, for: s)
     }
+  }
+
+
+  func testSubScalarSlicing() {
+    struct NSRange { var location, length: Int }
+
+    func NSFakeRange(_ location: Int, _ length: Int) -> NSRange {
+      return NSRange(location: location, length: length)
+    }
+
+    func substring(of _storage: UTF8String.String, with range: NSRange) -> UTF8String.String {
+      let start = _storage.utf16.startIndex
+      let min = _storage.utf16.index(start, offsetBy: range.location)
+      let max = _storage.utf16.index(
+        start, offsetBy: range.location + range.length)
+
+      if let substr = UTF8String.String(_storage.utf16[min..<max]) {
+        return substr
+      }
+      //If we come here, then the range has created unpaired surrogates on either end.
+      //An unpaired surrogate is replaced by OXFFFD - the Unicode Replacement Character.
+      //The CRLF ("\r\n") sequence is also treated like a surrogate pair, but its constinuent
+      //characters "\r" and "\n" can exist outside the pair!
+
+      let replacementCharacter = UTF8String.String(describing: UnicodeScalar(0xFFFD)!)
+      let CR: UInt16 = 13  //carriage return
+      let LF: UInt16 = 10  //new line
+
+      //make sure the range is of non-zero length
+      guard range.length > 0 else { return "" as UTF8String.String }
+
+      //if the range is pointing to a single unpaired surrogate
+      if range.length == 1 {
+        switch _storage.utf16[min] {
+        case CR: return "\r"
+        case LF: return "\n"
+        default: return replacementCharacter
+        }
+      }
+
+      //set the prefix and suffix characters
+      let prefix = _storage.utf16[min] == LF ? "\n" : replacementCharacter
+      let suffix = _storage.utf16[_storage.utf16.index(before: max)] == CR
+        ? "\r" : replacementCharacter
+
+      let postMin = _storage.utf16.index(after: min)
+
+      //if the range breaks a surrogate pair at the beginning of the string
+      if let substrSuffix = String(
+        _storage.utf16[postMin..<max]) {
+        return prefix + substrSuffix
+      }
+
+      let preMax = _storage.utf16.index(before: max)
+      //if the range breaks a surrogate pair at the end of the string
+      if let substrPrefix = String(_storage.utf16[min..<preMax]) {
+        return substrPrefix + suffix
+      }
+
+      //the range probably breaks surrogate pairs at both the ends
+      guard postMin <= preMax else { return prefix + suffix }
+
+      let substr =  String(_storage.utf16[postMin..<preMax])!
+      return prefix + substr + suffix
+    }
+
+    // let trivial = "swift.org"
+    // expectEqual(substring(of: trivial, with: NSFakeRange(0, 5)), "swift")
+
+    let surrogatePairSuffix = "Hurray🎉" as UTF8String.String
+    expectEqual(substring(of: surrogatePairSuffix, with: NSFakeRange(0, 7)), "Hurray�" as UTF8String.String)
+  }
+
+  func testViewIndexMapping() {
+
+    let replacementUTF16: UTF16.CodeUnit = 0xFFFD
+    let replacementUTF8: [UTF8.CodeUnit] = [0xEF, 0xBF, 0xBD]
+    let replacementScalar = UnicodeScalar(replacementUTF16)!
+    let replacementCharacter = UTF8String.Character(replacementScalar)
+
+    // This string contains a variety of non-ASCII characters, including
+    // Unicode scalars that must be represented with a surrogate pair in
+    // UTF16, grapheme clusters composed of multiple Unicode scalars, and
+    // invalid UTF16 that should be replaced with replacement characters.
+
+    let winterUTF16 = Array("🏂☃❅❆❄︎⛄️❄️".utf16) + [0xD83C, 0x0020, 0xDF67, 0xD83C]
+
+
+    var winter = winterUTF16.withUnsafeBufferPointer {
+      String._fromInvalidUTF16($0)
+    }
+
+    let winterInvalidUTF8: [UTF8.CodeUnit] = replacementUTF8 + ([0x20] as [UTF8.CodeUnit]) + replacementUTF8 + replacementUTF8
+    let winterUTF8: [UTF8.CodeUnit] = [
+      0xf0, 0x9f, 0x8f, 0x82, 0xe2, 0x98, 0x83, 0xe2, 0x9d, 0x85, 0xe2,
+      0x9d, 0x86, 0xe2, 0x9d, 0x84, 0xef, 0xb8, 0x8e, 0xe2, 0x9b, 0x84,
+      0xef, 0xb8, 0x8f, 0xe2, 0x9d, 0x84, 0xef, 0xb8, 0x8f
+      ] + winterInvalidUTF8
+
+    let winterUTF16Indices = Array(winter.utf16.indices)
+    print(UTF8String.String(winter[winterUTF16Indices[1]]).asSwiftString)
+    print(UTF8String.String.Index(winterUTF16Indices[1], within: winter))
+    let winterUTF8Indices = Array(winter.utf8.indices)
+    print(winter[winterUTF8Indices[1]])
+
+
+    let summer = "school's out!" as UTF8String.String
+    let summerBytes: [UInt8] = [
+      0x73, 0x63, 0x68, 0x6f, 0x6f, 0x6c, 0x27, 0x73, 0x20, 0x6f, 0x75, 0x74, 0x21]
+
+    // check the first three utf8 code units at the start of each utf16
+    // code unit
+
+    // Set up the parameters as explicit variables...
+    let id = "legacy"
+    func mapIndex(
+      _ i: UTF8String.String.Index, _ v: UTF8String.String.UTF8View
+    ) -> UTF8String.String.Index? {
+      return i.samePosition(in: v)
+    }
+
+    let testArray = winter.utf16.indices.map {
+      i16 in mapIndex(i16, winter.utf8).map {
+        i8 in (0..<3).map {
+          winter.utf8[winter.utf8.index(i8, offsetBy: $0)]
+        }
+      } ?? []
+    }
+
+    expectEqualSequence(
+      [
+        [0xf0, 0x9f, 0x8f],
+        // does not align with any utf8 code unit
+        id == "legacy" ? [] : replacementUTF8,
+        [0xe2, 0x98, 0x83],
+        [0xe2, 0x9d, 0x85],
+        [0xe2, 0x9d, 0x86],
+        [0xe2, 0x9d, 0x84],
+        [0xef, 0xb8, 0x8e],
+        [0xe2, 0x9b, 0x84],
+        [0xef, 0xb8, 0x8f],
+        [0xe2, 0x9d, 0x84],
+        [0xef, 0xb8, 0x8f],
+        replacementUTF8,
+        [0x20] + replacementUTF8[0..<2],
+        replacementUTF8,
+        replacementUTF8
+        ] as [[UTF8.CodeUnit]],
+      testArray)//, sameValue: ==)
+
+    expectNotNil(mapIndex(winter.utf16.endIndex, winter.utf8))
+    expectEqual(
+      winter.utf8.endIndex,
+      mapIndex(winter.utf16.endIndex, winter.utf8)!)
+
+    expectEqualSequence(
+      summerBytes,
+      summer.utf16.indices.map {
+        summer.utf8[mapIndex($0, summer.utf8)!]
+      }
+    )
+
+    expectNotNil(mapIndex(summer.utf16.endIndex, summer.utf8))
+    expectEqual(
+      summer.utf8.endIndex,
+      mapIndex(summer.utf16.endIndex, summer.utf8)!)
   }
 
 //  static var allTests = [
