@@ -114,6 +114,7 @@ EOF
 
 (
 cd "$swift_dir"
+git fetch
 utils/update-checkout --config="$tmpfile" --scheme=utf8string
 )
 
