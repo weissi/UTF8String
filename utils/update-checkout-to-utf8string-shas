@@ -89,20 +89,21 @@ cat >> "$tmpfile" <<EOF
     "branch-schemes": {
         "utf8string": {
             "repos": {
-                "compiler-rt": "8160e45e66b631d091f9e585e38d6e5f262ec6c8",
-                "llvm": "a4d539e482ca76290f3db6b775203ae230b34d42",
+                "compiler-rt": "cd84712c809bdad9815b133a1423d0ed244d79dd",
+                "llvm": "6d629af647e6081509f2b7b37f0dd3356ebc7f10",
                 "swift-xcode-playground-support": "f2e299a37eb6531918b6c9ce7f555b54d68d92d4",
-                "swift-corelibs-foundation": "707896fe1041c8d9c0ed6fa4a0752100714ee793",
-                "clang": "773ac0251a7ea94c0b58d96353d4210a7eb2aeef",
-                "llbuild": "b1ac250308264b0f57457448cd47ac45de53df71",
+                "swift-corelibs-foundation": "9f217d195dc115cb82442ee0d8eba1027f3d6f8f",
+                "clang": "257fa1914346d3a1d53a0d8d8f15f5a80cd47dc9",
+                "llbuild": "e613180370e85b4a1cc25c579b8a4ca224f3e729",
                 "cmark": "d875488a6a95d5487b7c675f79a8dafef210a65f",
-                "lldb": "2231b516a5b8e9059d3e62b1d936bee99b6c3c38",
-                "swiftpm": "eee27531dec0a8a9c509ccfa324b8c7a81c1df61",
-                "swift-corelibs-xctest": "11b22e5ed8d6ffc2734810ae6d3b56160092745b",
+                "lldb": "dc5868b38689066c392bcee2005fa07c99c25949",
+                "swift-syntax": "0144a2b1adec478d7be341b1108f0089f19ad6a7",
+                "swiftpm": "db85546f5178fe62f4ed87fdebead1f0bf2944c1",
+                "swift-corelibs-xctest": "d257acf2100582bf9ccdcf50196b4bf3886ea3b3",
                 "ninja": "253e94c1fa511704baeb61cf69995bbf09ba435e",
-                "swift-integration-tests": "e882c92e1f063f5971f11c4163414fd75356f521",
+                "swift-integration-tests": "6cfcfc91fa986a82588680bbcd011eacaaf1400b",
                 "swift": "$swift_sha",
-                "swift-corelibs-libdispatch": "5f49e8bd1403757da08a685cea9c276ccdd09b75"
+                "swift-corelibs-libdispatch": "6162a1d17948502cbe0576058d19e095ef3ad8c7"
             },
             "aliases": [
                 "utf8string"
