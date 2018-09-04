@@ -222,3 +222,37 @@ extension _ValidUTF8Buffer {
     return (unbiased & mask, count)
   }
 }
+
+// Access the underlying code units
+extension Unicode.Scalar {
+  // Access the scalar as encoded in UTF-16
+  internal func withUTF16CodeUnits<Result>(
+    _ body: (UnsafeBufferPointer<UInt16>) throws -> Result
+    ) rethrows -> Result {
+    var codeUnits: (UInt16, UInt16) = (self.utf16[0], 0)
+    let utf16Count = self.utf16.count
+    if utf16Count > 1 {
+      _sanityCheck(utf16Count == 2)
+      codeUnits.1 = self.utf16[1]
+    }
+    return try Swift.withUnsafePointer(to: &codeUnits) {
+      return try $0.withMemoryRebound(to: UInt16.self, capacity: 2) {
+        return try body(UnsafeBufferPointer(start: $0, count: utf16Count))
+      }
+    }
+  }
+
+  // Access the scalar as encoded in UTF-8
+  @inlinable
+  internal func withUTF8CodeUnits<Result>(
+    _ body: (UnsafeBufferPointer<UInt8>) throws -> Result
+    ) rethrows -> Result {
+    let encodedScalar = UTF8.encode(self)!
+    var (codeUnits, utf8Count) = encodedScalar._bytes
+    return try Swift.withUnsafePointer(to: &codeUnits) {
+      return try $0.withMemoryRebound(to: UInt8.self, capacity: 4) {
+        return try body(UnsafeBufferPointer(start: $0, count: utf8Count))
+      }
+    }
+  }
+}

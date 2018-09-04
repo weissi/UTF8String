@@ -523,7 +523,7 @@ final class UTF8StringTests: XCTestCase {
 
 
     var winter = winterUTF16.withUnsafeBufferPointer {
-      String._fromInvalidUTF16($0)
+      UTF8String.String._fromInvalidUTF16($0)
     }
 
     let winterInvalidUTF8: [UTF8.CodeUnit] = replacementUTF8 + ([0x20] as [UTF8.CodeUnit]) + replacementUTF8 + replacementUTF8
