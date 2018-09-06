@@ -605,8 +605,91 @@ final class UTF8StringTests: XCTestCase {
 //  static var allTests = [
 //    ("testExample", testExample),
 //    ]
+
+  func testMalformedBridged() {
+    let badStr = NonContiguousNSString(
+      [0xDE25, 0xD83D, 0xDC4D, 0x0061, 0x0062, 0x0063] as [UInt16])
+
+    let correctedStr = "\u{FFFD}👍abc" as UTF8String.String
+    expectPrototypeEquivalence(correctedStr, badStr as Swift.String)
+    expectPrototypeEquivalence(
+      UTF8String.String(_cocoaString: badStr), correctedStr.asSwiftString)
+  }
+
 }
 
+// The most simple subclass of NSString that CoreFoundation does not know
+// about.
+class NonContiguousNSString : NSString {
+  override init() {
+    _value = []
+    super.init()
+  }
+
+  required init(coder aDecoder: NSCoder) {
+    fatalError("don't call this initializer")
+  }
+  required init(itemProviderData data: Data, typeIdentifier: Swift.String) throws {
+    fatalError("don't call this initializer")
+  }
+
+  @nonobjc
+  convenience init(_ utf8: [UInt8]) {
+    var encoded = [UInt16]()
+    let output: (UInt16) -> Void = { encoded.append($0) }
+    let iterator = utf8.makeIterator()
+    let hadError = transcode(
+      iterator,
+      from: UTF8.self,
+      to: UTF16.self,
+      stoppingOnError: true,
+      into: output)
+    expectFalse(hadError)
+    self.init(encoded)
+  }
+
+  @nonobjc
+  init(_ value: [UInt16]) {
+    _value = value
+    super.init()
+  }
+
+  @nonobjc
+  convenience init(_ scalars: [UInt32]) {
+    var encoded = [UInt16]()
+    let output: (UInt16) -> Void = { encoded.append($0) }
+    let iterator = scalars.makeIterator()
+    let hadError = transcode(
+      iterator,
+      from: UTF32.self,
+      to: UTF16.self,
+      stoppingOnError: true,
+      into: output)
+    expectFalse(hadError)
+    self.init(encoded)
+  }
+
+  required init?(pasteboardPropertyList propertyList: Any, ofType type: NSPasteboard.PasteboardType) {
+    fatalError("init(pasteboardPropertyList:ofType:) has not been implemented")
+  }
+
+  @objc(copyWithZone:)
+  override func copy(with zone: NSZone?) -> Any {
+    // Ensure that copying this string produces a class that CoreFoundation
+    // does not know about.
+    return self
+  }
+
+  @objc override var length: Int {
+    return _value.count
+  }
+
+  @objc override func character(at index: Int) -> unichar {
+    return _value[index]
+  }
+
+  var _value: [UInt16]
+}
 enum SimpleString: UTF8String.String {
   case smallASCII = "abcdefg"
   case smallUnicode = "abéÏ𓀀"
@@ -665,3 +748,5 @@ func validateViewCount<View: BidirectionalCollection>(
     expectEqual(indicesArray[i], idx)
   }
 }
+
+

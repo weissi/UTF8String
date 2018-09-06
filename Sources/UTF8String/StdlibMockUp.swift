@@ -256,3 +256,9 @@ extension Unicode.Scalar {
     }
   }
 }
+extension Unicode.Scalar {
+  @inlinable // FIXME(sil-serialize-all)
+  internal static var _replacementCharacter: Unicode.Scalar {
+    return Unicode.Scalar(0xFFFD)!
+  }
+}
