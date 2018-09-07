@@ -262,3 +262,9 @@ extension Unicode.Scalar {
     return Unicode.Scalar(0xFFFD)!
   }
 }
+extension UTF16 {
+  @inlinable // FIXME(sil-serialize-all)
+  internal static var _replacementCodeUnit: UInt16 {
+    return 0xFFFD
+  }
+}
