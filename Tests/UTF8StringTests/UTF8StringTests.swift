@@ -652,46 +652,52 @@ final class UTF8StringTests: XCTestCase {
   }
 
   func testStringBreadcrumbs() {
+    let stride = _StringBreadcrumbs.breadcrumbStride
+    func validateBreadcrumbs(_ str: UTF8String.String) {
+      let crumbs = _StringBreadcrumbs(str)
+      expectEqual(str.utf16.count, crumbs.utf16Length)
+      expectEqual((str.utf16.count-1) / stride, crumbs.utf16ToIndex.count)
+
+      // Sanity check
+      var utf16Array = Array(str.utf16)
+
+      var idx = str.utf16.startIndex
+      for crumbIdx in 0..<crumbs.utf16ToIndex.count {
+        let crumb = crumbs.utf16ToIndex[crumbIdx]
+        idx = str.utf16.index(idx, offsetBy: stride)
+        expectEqual(idx, crumb)
+        expectEqual(str.utf16[idx], utf16Array[(1+crumbIdx) * stride])
+
+      }
+    }
+
     let crumbsSmall = _StringBreadcrumbs(str)
     expectEqual(42, crumbsSmall.utf16Length)
     expectEqual(str.utf16.count, crumbsSmall.utf16Length)
     expectEqual([], crumbsSmall.utf16ToIndex)
 
-    let stride = _StringBreadcrumbs.breadcrumbStride
     let a = "a" as UTF8String.String
     let 日 = "日" as UTF8String.String
 
-    let justBelowCrumbs = _StringBreadcrumbs(UTF8String.String(repeating: a, count: stride-1))
-    dump(justBelowCrumbs)
-    let justBelowCrumbs_2 = _StringBreadcrumbs(UTF8String.String(repeating: 日, count: stride-1))
-    dump(justBelowCrumbs_2)
+    // Test our basic string
+    validateBreadcrumbs(str)
 
-    let atCrumbs = _StringBreadcrumbs(UTF8String.String(repeating: a, count: stride))
-    dump(atCrumbs)
-    let atCrumbs_2 = _StringBreadcrumbs(UTF8String.String(repeating: 日, count: stride))
-    dump(atCrumbs_2)
+    // Test just around the stride boundary
+    validateBreadcrumbs(UTF8String.String(repeating: a, count: stride-1))
+    validateBreadcrumbs(UTF8String.String(repeating: 日, count: stride-1))
+    validateBreadcrumbs(UTF8String.String(repeating: a, count: stride))
+    validateBreadcrumbs(UTF8String.String(repeating: 日, count: stride))
+    validateBreadcrumbs(UTF8String.String(repeating: a, count: stride+1))
+    validateBreadcrumbs(UTF8String.String(repeating: 日, count: stride+1))
 
-    let aboveCrumbs = _StringBreadcrumbs(UTF8String.String(repeating: a, count: stride+1))
-    dump(aboveCrumbs)
-    let aboveCrumbs_2 = _StringBreadcrumbs(UTF8String.String(repeating: 日, count: stride+1))
-    dump(aboveCrumbs_2)
+    // Test just around multiples of stride boundaries
+    validateBreadcrumbs(UTF8String.String(repeating: a, count: stride*2-1))
+    validateBreadcrumbs(UTF8String.String(repeating: a, count: stride*2))
+    validateBreadcrumbs(UTF8String.String(repeating: a, count: stride*2+1))
 
-    let doubleBelow = _StringBreadcrumbs(UTF8String.String(repeating: a, count: stride*2-1))
-    dump(doubleBelow)
-
-    let double = _StringBreadcrumbs(UTF8String.String(repeating: a, count: stride*2))
-    dump(double)
-
-    let doubleAbove = _StringBreadcrumbs(UTF8String.String(repeating: a, count: stride*2+1))
-    dump(doubleAbove)
-
-    let reallyLarge = UTF8String.String(repeating: str, count: 1024)
-    let crumbsLarge = _StringBreadcrumbs(reallyLarge)
-    print(reallyLarge.count)
-    print(reallyLarge.utf16.count)
-    dump(crumbsLarge)
+    // Test really large string
+    validateBreadcrumbs(UTF8String.String(repeating: str, count: 1024))
   }
-
 }
 
 // The most simple subclass of NSString that CoreFoundation does not know
