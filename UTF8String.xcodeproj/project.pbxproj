@@ -26,6 +26,7 @@
 		186B4F2C20F4045500E9E9B1 /* ThreadLocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186B4F2B20F4045500E9E9B1 /* ThreadLocalStorage.swift */; };
 		188817C020F7F23C0023AA32 /* ICU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188817BF20F7F23C0023AA32 /* ICU.swift */; };
 		188CD3D4211E13BD0039DCD4 /* StringTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188CD3D3211E13BD0039DCD4 /* StringTesting.swift */; };
+		188CD3D621470E090039DCD4 /* StringBreadcrumbs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188CD3D521470E090039DCD4 /* StringBreadcrumbs.swift */; };
 		18A8967E20EC45CD0097A770 /* OutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8967920EC45CC0097A770 /* OutputStream.swift */; };
 		18A8967F20EC45CD0097A770 /* SmallString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8967A20EC45CC0097A770 /* SmallString.swift */; };
 		18A8968120EC45CD0097A770 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8967C20EC45CD0097A770 /* Character.swift */; };
@@ -88,6 +89,7 @@
 		186B4F2B20F4045500E9E9B1 /* ThreadLocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThreadLocalStorage.swift; path = "../../../utf8-swift/swift/stdlib/public/core/ThreadLocalStorage.swift"; sourceTree = "<group>"; };
 		188817BF20F7F23C0023AA32 /* ICU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ICU.swift; path = "../../../utf8-swift/swift/stdlib/public/core/ICU.swift"; sourceTree = "<group>"; };
 		188CD3D3211E13BD0039DCD4 /* StringTesting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringTesting.swift; path = "../../../utf8-swift/swift/stdlib/public/core/StringTesting.swift"; sourceTree = "<group>"; };
+		188CD3D521470E090039DCD4 /* StringBreadcrumbs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringBreadcrumbs.swift; path = "../../../utf8-swift/swift/stdlib/public/core/StringBreadcrumbs.swift"; sourceTree = "<group>"; };
 		18A8967920EC45CC0097A770 /* OutputStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OutputStream.swift; path = "../../../utf8-swift/swift/stdlib/public/core/OutputStream.swift"; sourceTree = "<group>"; };
 		18A8967A20EC45CC0097A770 /* SmallString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SmallString.swift; path = "../../../utf8-swift/swift/stdlib/public/core/SmallString.swift"; sourceTree = "<group>"; };
 		18A8967C20EC45CD0097A770 /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Character.swift; path = "../../../utf8-swift/swift/stdlib/public/core/Character.swift"; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 				OBJ_9 /* Scratch.swift */,
 				18A8967A20EC45CC0097A770 /* SmallString.swift */,
 				18A8968D20EC45EA0097A770 /* String.swift */,
+				188CD3D521470E090039DCD4 /* StringBreadcrumbs.swift */,
 				18A8968720EC45EA0097A770 /* StringBridge.swift */,
 				18A8968A20EC45EA0097A770 /* StringCharacterView.swift */,
 				18A8968320EC45EA0097A770 /* StringComparable.swift */,
@@ -328,6 +331,7 @@
 				18A896AB20EC45EC0097A770 /* StringRangeReplaceableCollection.swift in Sources */,
 				OBJ_47 /* StdlibMockUp.swift in Sources */,
 				18A896AD20EC45EC0097A770 /* StringUnicodeScalarView.swift in Sources */,
+				188CD3D621470E090039DCD4 /* StringBreadcrumbs.swift in Sources */,
 				18A896A220EC45EC0097A770 /* StringCharacterView.swift in Sources */,
 				18A896AE20EC45EC0097A770 /* StringUTF16View.swift in Sources */,
 				18A896A320EC45EC0097A770 /* StringIndexConversions.swift in Sources */,

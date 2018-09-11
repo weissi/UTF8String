@@ -616,6 +616,47 @@ final class UTF8StringTests: XCTestCase {
       UTF8String.String(_cocoaString: badStr), correctedStr.asSwiftString)
   }
 
+  func testStringBreadcrumbs() {
+    let crumbsSmall = _StringBreadcrumbs(str)
+    expectEqual(42, crumbsSmall.utf16Length)
+    expectEqual(str.utf16.count, crumbsSmall.utf16Length)
+    expectEqual([], crumbsSmall.utf16ToIndex)
+
+    let stride = _StringBreadcrumbs.breadcrumbStride
+    let a = "a" as UTF8String.String
+    let 日 = "日" as UTF8String.String
+
+    let justBelowCrumbs = _StringBreadcrumbs(UTF8String.String(repeating: a, count: stride-1))
+    dump(justBelowCrumbs)
+    let justBelowCrumbs_2 = _StringBreadcrumbs(UTF8String.String(repeating: 日, count: stride-1))
+    dump(justBelowCrumbs_2)
+
+    let atCrumbs = _StringBreadcrumbs(UTF8String.String(repeating: a, count: stride))
+    dump(atCrumbs)
+    let atCrumbs_2 = _StringBreadcrumbs(UTF8String.String(repeating: 日, count: stride))
+    dump(atCrumbs_2)
+
+    let aboveCrumbs = _StringBreadcrumbs(UTF8String.String(repeating: a, count: stride+1))
+    dump(aboveCrumbs)
+    let aboveCrumbs_2 = _StringBreadcrumbs(UTF8String.String(repeating: 日, count: stride+1))
+    dump(aboveCrumbs_2)
+
+    let doubleBelow = _StringBreadcrumbs(UTF8String.String(repeating: a, count: stride*2-1))
+    dump(doubleBelow)
+
+    let double = _StringBreadcrumbs(UTF8String.String(repeating: a, count: stride*2))
+    dump(double)
+
+    let doubleAbove = _StringBreadcrumbs(UTF8String.String(repeating: a, count: stride*2+1))
+    dump(doubleAbove)
+
+    let reallyLarge = UTF8String.String(repeating: str, count: 1024)
+    let crumbsLarge = _StringBreadcrumbs(reallyLarge)
+    print(reallyLarge.count)
+    print(reallyLarge.utf16.count)
+    dump(crumbsLarge)
+  }
+
 }
 
 // The most simple subclass of NSString that CoreFoundation does not know
@@ -748,5 +789,4 @@ func validateViewCount<View: BidirectionalCollection>(
     expectEqual(indicesArray[i], idx)
   }
 }
-
 
