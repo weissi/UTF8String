@@ -235,6 +235,32 @@ final class UTF8StringTests: XCTestCase {
       expectEqual(ptr._asUInt8, str._guts._object.nativeUTF8.baseAddress!)
     }
 
+    str.withCString { ptr in
+      expectPrototypeEquivalence(str, Swift.String(cString: ptr))
+      expectPrototypeEquivalence(UTF8String.String(cString: ptr), swiftStr)
+    }
+
+    let subStr = str.dropFirst()
+    let swiftSubStr = swiftStr.dropFirst()
+    subStr.withCString { ptr in
+      expectPrototypeEquivalence(
+        UTF8String.String(subStr), Swift.String(cString: ptr))
+      expectPrototypeEquivalence(
+        UTF8String.String(cString: ptr), Swift.String(swiftSubStr))
+    }
+
+    str.withCString(encodedAs: UTF32.self) { ptr in
+      expectPrototypeEquivalence(str, Swift.String(decodingCString: ptr, as: UTF32.self))
+      expectPrototypeEquivalence(UTF8String.String(decodingCString: ptr, as: UTF32.self), swiftStr)
+    }
+    subStr.withCString(encodedAs: UTF32.self) { ptr in
+      expectPrototypeEquivalence(
+        UTF8String.String(subStr), Swift.String(decodingCString: ptr, as: UTF32.self))
+      expectPrototypeEquivalence(
+        UTF8String.String(decodingCString: ptr, as: UTF32.self), Swift.String(swiftSubStr))
+    }
+
+
     // TODO: perf opportunity here...
 //    str.dropFirst().withCString { ptr in
 //      // Test for interior pointer
@@ -242,6 +268,15 @@ final class UTF8StringTests: XCTestCase {
 //    }
 
     // TODO: others...
+  }
+
+  func testNSStringInit() {
+    expectEqual("foo, a basmati bar!",
+                        String(cString:
+                          "foo, a basmati bar!", encoding: String.defaultCStringEncoding)!)
+    expectEqual("foo, a basmati bar!",
+                        UTF8String.String(cString:
+                          "foo, a basmati bar!", encoding: String.defaultCStringEncoding)!)
   }
 
   func testStringCreate() {

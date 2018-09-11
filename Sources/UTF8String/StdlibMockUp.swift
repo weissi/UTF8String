@@ -268,3 +268,18 @@ extension UTF16 {
     return 0xFFFD
   }
 }
+
+// NSStringAPI.swift
+extension String {
+  public init?(
+    cString: UnsafePointer<CChar>,
+    encoding enc: Swift.String.Encoding
+    ) {
+    if let ns = NSString(cString: cString, encoding: enc.rawValue) {
+      self = String(_cocoaString: ns)
+    } else {
+      return nil
+    }
+  }
+
+}
